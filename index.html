@@ -117,7 +117,15 @@
       font-weight: 400;
       letter-spacing: 0.18em;
       text-transform: lowercase;
-    }
+}
+
+.ep-title::before {
+    content: "「";
+}
+
+.ep-title::after {
+    content: "」";
+}
 
     .status {
       color: var(--muted);
@@ -251,7 +259,7 @@
   }
 
   .main-logo {
-    width: min(360px, 72vw);
+    width: min(320px, 68vw);
     margin: 0 auto 18px;
   }
 
@@ -333,7 +341,7 @@
 
     <section>
       <div class="label">_upcoming ep</div>
-      <h2 class="ep-title">「the last flower」</h2>
+      <h2 class="ep-title">the last flower</h2>
       <div class="status">coming soon</div>
     </section>
 
