@@ -58,25 +58,40 @@
 
     .main-logo {
   width: min(520px, 78vw);
-  margin: 0 auto 28px;
+  margin: 0 auto 16px;
   display: block;
 
   filter:
     drop-shadow(0 0 8px rgba(255,112,24,.28))
     drop-shadow(0 0 24px rgba(255,112,24,.12));
 
-  opacity: 0.96;
-    }
+  opacity: 0;
+  animation: logoFade 0.9s ease-out forwards;
+}
+@keyframes logoFade {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
 
+  to {
+    opacity: 0.96;
+    transform: translateY(0);
+  }
+}
 
     .tagline {
-      margin-top: 24px;
-      color: var(--muted);
-      font-family: "Inter", sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.38em;
-      text-transform: lowercase;
-    }
+  margin-top: 0;
+  color: var(--muted);
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.38em;
+  text-transform: lowercase;
+
+  opacity: 0;
+  animation: logoFade 0.9s ease-out forwards;
+  animation-delay: 0.25s;
+}
 
     .tagline span {
       color: var(--orange);
