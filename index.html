@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>akyiro</title>
+  <meta name="description" content="akyiro - ambient / cyberpunk / metalcore. latest release: unnamed. upcoming ep: the last flower." />
+  <meta property="og:title" content="akyiro" />
+  <meta property="og:description" content="latest release: unnamed. upcoming ep: the last flower." />
+  <meta property="og:image" content="https://akyiro.xyz/assets/og-image.png" />
+  <meta property="og:url" content="https://akyiro.xyz" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="assets/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Michroma&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020100;
+      --text: #f2dfc8;
+      --soft: #b99678;
+      --dim: rgba(242, 180, 115, 0.72);
+      --orange: #ff6814;
+      --orange-2: #ff8a2a;
+      --line: rgba(255, 104, 20, 0.72);
+      --line-soft: rgba(255, 104, 20, 0.23);
+      --panel: rgba(255, 115, 23, 0.045);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255, 104, 20, 0.28), transparent 20%),
+        radial-gradient(circle at 50% 42%, rgba(255, 104, 20, 0.12), transparent 31%),
+        radial-gradient(circle at 50% 78%, rgba(255, 104, 20, 0.08), transparent 32%),
+        linear-gradient(180deg, #020100 0%, #070301 47%, #020100 100%);
+      color: var(--text);
+      font-family: "Michroma", system-ui, sans-serif;
+      text-transform: lowercase;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(0deg, rgba(255, 100, 20, 0.055) 0 1px, transparent 1px 38px),
+        repeating-linear-gradient(90deg, rgba(255, 100, 20, 0.024) 0 1px, transparent 1px 76px);
+      opacity: 0.22;
+      mix-blend-mode: screen;
+      mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 0%, rgba(255, 100, 20, 0.06) 48%, rgba(255, 100, 20, 0.10) 50%, rgba(255, 100, 20, 0.06) 52%, transparent 100%),
+        radial-gradient(circle at center, transparent 44%, rgba(0,0,0,0.68) 100%);
+      opacity: 0.9;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1080px, calc(100% - 34px));
+      margin: 0 auto;
+      padding: 56px 0 42px;
+      text-align: center;
+    }
+
+    .logo-wrap {
+      width: min(360px, 74vw);
+      margin: 0 auto 20px;
+      position: relative;
+    }
+
+    .logo-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 18% 12%;
+      background: radial-gradient(circle, rgba(255, 96, 12, 0.55), transparent 66%);
+      filter: blur(28px);
+      z-index: -1;
+    }
+
+    .logo {
+      width: 100%;
+      display: block;
+      filter:
+        drop-shadow(0 0 10px rgba(255, 95, 12, 0.95))
+        drop-shadow(0 0 34px rgba(255, 95, 12, 0.55))
+        drop-shadow(0 0 84px rgba(255, 95, 12, 0.22));
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--orange-2);
+      font-size: clamp(2.85rem, 8.8vw, 5.7rem);
+      font-weight: 400;
+      letter-spacing: 0.055em;
+      text-shadow:
+        0 0 14px rgba(255, 110, 20, 0.72),
+        0 0 38px rgba(255, 110, 20, 0.28);
+    }
+
+    .tagline {
+      margin-top: 24px;
+      color: var(--text);
+      font-size: clamp(0.72rem, 1.8vw, 0.98rem);
+      letter-spacing: 0.42em;
+      text-shadow: 0 0 14px rgba(255, 160, 90, 0.22);
+    }
+
+    .slash {
+      color: var(--orange);
+      margin: 0 18px;
+      text-shadow: 0 0 14px rgba(255, 105, 20, 0.95);
+    }
+
+    .divider {
+      position: relative;
+      height: 1px;
+      margin: 58px 0 46px;
+      background: linear-gradient(90deg, transparent, var(--line), transparent);
+      box-shadow: 0 0 18px rgba(255, 104, 20, 0.28);
+    }
+
+    .divider::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 22px;
+      height: 22px;
+      transform: translate(-50%, -50%) rotate(45deg);
+      border: 1px solid var(--orange);
+      background: #080301;
+      box-shadow: 0 0 16px rgba(255, 104, 20, 0.85);
+    }
+
+    .divider::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 6px;
+      height: 6px;
+      transform: translate(-50%, -50%);
+      background: var(--orange-2);
+      box-shadow: 0 0 18px rgba(255, 104, 20, 1);
+    }
+
+    .label {
+      color: var(--orange-2);
+      font-size: clamp(0.7rem, 1.35vw, 0.86rem);
+      letter-spacing: 0.44em;
+      margin-bottom: 28px;
+      text-shadow: 0 0 14px rgba(255, 104, 20, 0.72);
+    }
+
+    .title {
+      margin: 0 0 38px;
+      color: var(--text);
+      font-size: clamp(2rem, 6.2vw, 4.1rem);
+      font-weight: 400;
+      letter-spacing: 0.075em;
+      text-shadow:
+        0 0 12px rgba(255, 200, 155, 0.58),
+        0 0 38px rgba(255, 104, 20, 0.28);
+    }
+
+    .jp {
+      color: #f9bf82;
+      text-shadow:
+        0 0 12px rgba(255, 104, 20, 0.8),
+        0 0 40px rgba(255, 104, 20, 0.25);
+    }
+
+    .listen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+      margin-bottom: 30px;
+      color: var(--orange-2);
+      font-size: 0.86rem;
+      letter-spacing: 0.34em;
+      text-shadow: 0 0 12px rgba(255, 104, 20, 0.7);
+    }
+
+    .listen::before,
+    .listen::after {
+      content: "";
+      width: min(180px, 18vw);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--line));
+      box-shadow: 0 0 12px rgba(255, 104, 20, 0.2);
+    }
+
+    .listen::after { background: linear-gradient(90deg, var(--line), transparent); }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .button {
+      min-height: 92px;
+      padding: 22px 24px;
+      border: 1px solid rgba(255, 104, 20, 0.88);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(255, 135, 42, 0.075), rgba(255, 104, 20, 0.018)),
+        rgba(4, 2, 1, 0.72);
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      font-size: clamp(0.76rem, 1.3vw, 0.95rem);
+      letter-spacing: 0.18em;
+      box-shadow:
+        inset 0 0 34px rgba(255, 104, 20, 0.055),
+        0 0 22px rgba(255, 104, 20, 0.12);
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      color: #fff1df;
+      border-color: var(--orange-2);
+      box-shadow:
+        inset 0 0 38px rgba(255, 104, 20, 0.11),
+        0 0 32px rgba(255, 104, 20, 0.34);
+    }
+
+    .icon {
+      width: 34px;
+      height: 34px;
+      color: var(--orange);
+      flex: none;
+      filter: drop-shadow(0 0 11px rgba(255, 104, 20, 0.86));
+    }
+
+    .footer-symbol {
+      width: 44px;
+      height: 44px;
+      margin: 60px auto 26px;
+      opacity: 0.95;
+      filter: drop-shadow(0 0 13px rgba(255, 104, 20, 0.85));
+    }
+
+    footer {
+      color: var(--dim);
+      font-size: 0.78rem;
+      letter-spacing: 0.3em;
+      text-shadow: 0 0 12px rgba(255, 104, 20, 0.28);
+    }
+
+    @media (max-width: 760px) {
+      .page { width: min(100% - 24px, 1080px); padding-top: 38px; }
+      .logo-wrap { width: min(300px, 82vw); }
+      .tagline { letter-spacing: 0.22em; line-height: 2.15; }
+      .slash { margin: 0 8px; }
+      .divider { margin: 46px 0 38px; }
+      .label { letter-spacing: 0.28em; }
+      .title { letter-spacing: 0.035em; }
+      .listen { gap: 14px; letter-spacing: 0.22em; font-size: 0.78rem; }
+      .listen::before, .listen::after { width: 54px; }
+      .buttons { grid-template-columns: 1fr; gap: 16px; }
+      .button { min-height: 76px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="logo-wrap">
+      <img class="logo" src="assets/logo-neon.png" alt="akyiro wilted flower logo" />
+    </div>
+
+    <h1>akyiro</h1>
+    <div class="tagline">ambient <span class="slash">/</span> cyberpunk <span class="slash">/</span> metalcore</div>
+
+    <div class="divider"></div>
+
+    <section>
+      <div class="label">latest release</div>
+      <h2 class="title"><span class="jp">「</span>unnamed<span class="jp">」</span></h2>
+      <div class="listen">listen now</div>
+
+      <div class="buttons">
+        <a class="button" href="https://open.spotify.com/track/4H0ow29yFlq0jaJVZYeMy4?si=33fe7ef119df4812" target="_blank" rel="noopener noreferrer" aria-label="listen on spotify">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.8A10.2 10.2 0 1 0 12 22.2 10.2 10.2 0 0 0 12 1.8Zm4.68 14.72a.74.74 0 0 1-1.02.25c-2.8-1.7-6.32-2.08-10.47-1.14a.74.74 0 1 1-.33-1.44c4.54-1.04 8.44-.59 11.56 1.32.35.21.47.67.26 1.01Zm1.25-2.8a.93.93 0 0 1-1.28.3c-3.2-1.96-8.08-2.53-11.86-1.38a.93.93 0 0 1-.54-1.78c4.32-1.31 9.7-.68 13.38 1.57.44.27.58.84.3 1.29Zm.11-2.92C14.2 8.52 7.86 8.31 4.2 9.42a1.1 1.1 0 0 1-.64-2.1c4.2-1.27 11.2-1.02 15.62 1.6a1.1 1.1 0 1 1-1.13 1.88Z"/></svg>
+          spotify
+        </a>
+
+        <a class="button" href="https://music.apple.com/us/song/unnamed/6776029231" target="_blank" rel="noopener noreferrer" aria-label="listen on apple music">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1 1.7c.1 1.3-.38 2.55-1.15 3.47-.82.98-2.16 1.75-3.45 1.65-.14-1.25.42-2.57 1.16-3.43.84-.98 2.28-1.72 3.44-1.69ZM20.4 17.35c-.48 1.1-.72 1.6-1.35 2.58-.87 1.32-2.1 2.96-3.62 2.98-1.35.02-1.7-.88-3.54-.87-1.84 0-2.23.9-3.58.88-1.52-.02-2.68-1.5-3.55-2.82-2.43-3.7-2.68-8.05-1.18-10.36 1.07-1.65 2.75-2.61 4.34-2.61 1.62 0 2.64.9 3.98.9 1.3 0 2.1-.9 3.98-.9 1.42 0 2.93.78 4 2.12-3.52 1.93-2.95 6.96.02 8.1Z"/></svg>
+          apple music
+        </a>
+
+        <a class="button" href="https://youtu.be/HgOzBR52dao?si=aEc0F1wmmsmQ2rs5" target="_blank" rel="noopener noreferrer" aria-label="listen on youtube music">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.1s-.2-1.5-.82-2.16c-.78-.82-1.65-.83-2.05-.88C15.87 3.85 12 3.85 12 3.85h-.01s-3.87 0-6.73.21c-.4.05-1.27.06-2.05.88C2.6 5.6 2.4 7.1 2.4 7.1S2.2 8.85 2.2 10.6v1.64c0 1.75.2 3.5.2 3.5s.2 1.5.82 2.16c.78.82 1.8.8 2.26.89 1.64.16 6.52.21 6.52.21s3.88 0 6.74-.22c.4-.04 1.27-.05 2.05-.87.61-.66.82-2.16.82-2.16s.2-1.75.2-3.5V10.6c0-1.75-.21-3.5-.21-3.5ZM10.03 14.8V8.72l5.13 3.05-5.13 3.03Z"/></svg>
+          youtube music
+        </a>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+      <div class="label">upcoming ep</div>
+      <h2 class="title"><span class="jp">「</span>the last flower<span class="jp">」</span></h2>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+      <div class="label">personal links</div>
+      <div class="buttons">
+        <a class="button" href="https://www.instagram.com/akyiro.music" target="_blank" rel="noopener noreferrer" aria-label="instagram">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6Zm9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5ZM12 7.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8Zm0 2a2.9 2.9 0 1 0 0 5.8 2.9 2.9 0 0 0 0-5.8Z"/></svg>
+          instagram
+        </a>
+
+        <a class="button" href="https://www.tiktok.com/@akyiro" target="_blank" rel="noopener noreferrer" aria-label="tiktok">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.1c1.12 1.3 2.22 2.07 3.85 2.2v3.2c-1.54.04-2.88-.35-4.02-1.1v5.95c0 4.02-2.68 6.65-6.35 6.65-3.4 0-6.02-2.32-6.02-5.78 0-3.9 3.04-6.16 6.87-5.74v3.33c-1.8-.3-3.3.52-3.3 2.3 0 1.44 1.08 2.33 2.45 2.33 1.55 0 2.58-.98 2.58-3.05V2h3.94v3.1Z"/></svg>
+          tiktok
+        </a>
+
+        <a class="button" href="https://www.youtube.com/@akyiro" target="_blank" rel="noopener noreferrer" aria-label="youtube">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.1s-.2-1.5-.82-2.16c-.78-.82-1.65-.83-2.05-.88C15.87 3.85 12 3.85 12 3.85h-.01s-3.87 0-6.73.21c-.4.05-1.27.06-2.05.88C2.6 5.6 2.4 7.1 2.4 7.1S2.2 8.85 2.2 10.6v1.64c0 1.75.2 3.5.2 3.5s.2 1.5.82 2.16c.78.82 1.8.8 2.26.89 1.64.16 6.52.21 6.52.21s3.88 0 6.74-.22c.4-.04 1.27-.05 2.05-.87.61-.66.82-2.16.82-2.16s.2-1.75.2-3.5V10.6c0-1.75-.21-3.5-.21-3.5ZM10.03 14.8V8.72l5.13 3.05-5.13 3.03Z"/></svg>
+          youtube
+        </a>
+      </div>
+    </section>
+
+    <img class="footer-symbol" src="assets/favicon.png" alt="" />
+    <footer>© akyiro</footer>
+  </main>
+</body>
+</html>
