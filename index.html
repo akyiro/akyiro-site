@@ -80,6 +80,41 @@
   }
 }
 
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  animation: fadeUp 0.75s ease-out forwards;
+}
+
+.reveal-delay-1 { animation-delay: 0.38s; }
+.reveal-delay-2 { animation-delay: 0.50s; }
+.reveal-delay-3 { animation-delay: 0.64s; }
+.reveal-delay-4 { animation-delay: 0.78s; }
+.reveal-delay-5 { animation-delay: 0.92s; }
+.reveal-delay-6 { animation-delay: 1.06s; }
+.reveal-delay-7 { animation-delay: 1.20s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .main-logo,
+  .tagline,
+  .reveal {
+    opacity: 1;
+    animation: none;
+    transform: none;
+  }
+}
+
     .tagline {
   margin-top: 0;
   color: var(--muted);
@@ -89,8 +124,8 @@
   text-transform: lowercase;
 
   opacity: 0;
-  animation: logoFade 0.9s ease-out forwards;
-  animation-delay: 0.25s;
+  animation: fadeUp 0.75s ease-out forwards;
+  animation-delay: 0.22s;
 }
 
     .tagline span {
@@ -338,9 +373,9 @@
       ambient <span>/</span> digital <span>/</span> melancholy
     </div>
 
-    <div class="divider"></div>
+    <div class="divider reveal reveal-delay-1"></div>
 
-    <section>
+    <section class="reveal reveal-delay-2">
       <div class="label">_latest release</div>
       <h2 class="bracket-title">unnamed</h2>
       <div class="status">out now</div>
@@ -365,17 +400,17 @@
       </div>
     </section>
 
-    <div class="divider"></div>
+    <div class="divider reveal reveal-delay-3"></div>
 
-    <section>
+    <section class="reveal reveal-delay-4">
       <div class="label">_upcoming ep</div>
      <h2 class="bracket-title ep-title">the last flower</h2>
       <div class="status">coming soon</div>
     </section>
 
-    <div class="divider"></div>
+    <div class="divider reveal reveal-delay-5"></div>
 
-    <section>
+    <section class="reveal reveal-delay-6">
       <div class="label">personal links_</div>
 
       <div class="buttons">
@@ -396,7 +431,7 @@
 </div>
     </section>
 
-    <footer>© akyiro</footer>
+    <footer class="reveal reveal-delay-7">© akyiro</footer>
   </main>
 </body>
 </html>
