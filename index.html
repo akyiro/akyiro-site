@@ -119,16 +119,18 @@
       text-transform: lowercase;
 }
 
-.ep-title::before {
+.bracket-title::before {
     content: "「";
+    margin-right: 0.08em;
 }
 
-.ep-title::after {
+.bracket-title::after {
     content: "」";
+    margin-left: 0.08em;
 }
 .ep-title {
     position: relative;
-    left: -6px;
+    left: -8px;
 }
     
     .status {
@@ -318,7 +320,7 @@
 
     <section>
       <div class="label">_latest release</div>
-      <h2>「unnamed」</h2>
+      <h2 class="bracket-title">unnamed</h2>
       <div class="status">out now</div>
 
       <div class="listen">listen now_</div>
@@ -345,7 +347,7 @@
 
     <section>
       <div class="label">_upcoming ep</div>
-      <h2 class="ep-title">the last flower</h2>
+     <h2 class="bracket-title">the last flower</h2>
       <div class="status">coming soon</div>
     </section>
 
