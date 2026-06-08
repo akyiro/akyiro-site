@@ -246,43 +246,51 @@
     }
 
     @media (max-width: 720px) {
-      body { padding-top: 34px; }
+  body {
+    padding-top: 34px;
+  }
 
-      .main-logo {
-  width: min(420px, 75vw);
-    margin: 0 auto 10px;
-      }
+  .main-logo {
+    width: min(360px, 72vw);
+    margin: 0 auto 18px;
+  }
 
-      h1 {
-        letter-spacing: 0.18em;
-        padding-left: 0.18em;
-      }
+  .tagline {
+    letter-spacing: 0.16em;
+    line-height: 2;
+  }
 
-      .tagline {
-        letter-spacing: 0.18em;
-        line-height: 2;
-      }
+  .tagline span {
+    margin: 0 7px;
+  }
 
-      .tagline span {
-        margin: 0 7px;
-      }
+  h2 {
+    font-size: clamp(2.1rem, 10vw, 3rem);
+    letter-spacing: 0.1em;
+  }
 
-      .buttons {
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
+  .ep-title {
+    white-space: nowrap;
+    font-size: clamp(2rem, 8.8vw, 2.7rem);
+    letter-spacing: 0.08em;
+  }
 
-      .button {
-        min-height: 70px;
-        font-size: 0.68rem;
-      }
+  .buttons {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
 
-      .button::before,
-      .button::after {
-        width: 46px;
-        height: 18px;
-      }
-    }
+  .button {
+    min-height: 70px;
+    font-size: 0.68rem;
+  }
+
+  .button::before,
+  .button::after {
+    width: 46px;
+    height: 18px;
+  }
+}
   </style>
 </head>
 
@@ -325,7 +333,7 @@
 
     <section>
       <div class="label">_upcoming ep</div>
-      <h2>「the last flower」</h2>
+      <h2 class="ep-title">「the last flower」</h2>
       <div class="status">coming soon</div>
     </section>
 
