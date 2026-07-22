@@ -1092,6 +1092,19 @@
       background: rgba(222, 108, 31, .14);
     }
 
+    .scanner-progress::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -26%;
+      width: 26%;
+      height: 100%;
+      opacity: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 188, 128, .96), transparent);
+      box-shadow: 0 0 10px rgba(255, 145, 61, .24);
+      pointer-events: none;
+    }
+
     .scanner-progress span {
       display: block;
       width: 0;
@@ -1102,6 +1115,21 @@
 
     .scanner-panel.is-loading .scanner-progress span {
       animation: scanner-load .62s cubic-bezier(.2,.75,.25,1) forwards;
+    }
+
+    .scanner-panel.is-loading .scanner-progress::after {
+      opacity: .92;
+      animation: scanner-progress-scan .96s linear infinite;
+    }
+
+    .scanner-panel.is-active:not(.is-loading) .scanner-progress span {
+      width: 100%;
+      animation: scanner-progress-idle-glow 3.6s ease-in-out infinite;
+    }
+
+    .scanner-panel.is-active:not(.is-loading) .scanner-progress::after {
+      opacity: .36;
+      animation: scanner-progress-idle 3.8s ease-in-out infinite;
     }
 
     .scanner-title {
@@ -1205,6 +1233,23 @@
       0% { width: 0; opacity: .4; }
       65% { width: 78%; opacity: 1; }
       100% { width: 100%; opacity: 1; }
+    }
+
+    @keyframes scanner-progress-scan {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(490%); }
+    }
+
+    @keyframes scanner-progress-idle {
+      0%, 100% { transform: translateX(12%); opacity: .16; }
+      45% { opacity: .34; }
+      60% { transform: translateX(238%); opacity: .46; }
+      100% { transform: translateX(420%); opacity: .14; }
+    }
+
+    @keyframes scanner-progress-idle-glow {
+      0%, 100% { box-shadow: 0 0 8px rgba(255, 145, 61, .20); opacity: .90; }
+      50% { box-shadow: 0 0 12px rgba(255, 145, 61, .34); opacity: 1; }
     }
 
     @keyframes scanner-pulse {
@@ -1405,8 +1450,8 @@
     <div class="scanner-data" id="scannerData"><span class="scanner-placeholder">MOVE CURSOR OVER AN INTERACTIVE TARGET</span></div>
   </aside>
 
-  <main class="page" id="mainInterface">
-    <div class="page-frame-top"><button class="frame-toggle" id="frameToggle" type="button" aria-pressed="false" aria-label="Toggle interface frame"><span class="frame-toggle__label">Toggle interface frame</span></button></div>
+  <main class="page interface-collapsed" id="mainInterface">
+    <div class="page-frame-top"><button class="frame-toggle" id="frameToggle" type="button" aria-pressed="true" aria-label="Expand interface frame"><span class="frame-toggle__label">Toggle interface frame</span></button></div>
     <div class="interface-core" id="interfaceCore">
     <img class="main-logo scan-target scan-logo" tabindex="0" data-scan-title="AKYIRO" data-scan-lines="ARTIST: AKYIRO|STYLE: AMBIENT / DIGITAL / MELANCHOLY|FOCUS: CINEMATIC + MODERN METALCORE|STATUS: INDEPENDENT PROJECT" src="./assets/akyiro-logo-full-transparent.png" alt="akyiro logo">
 
@@ -1646,17 +1691,21 @@
 
     const frameToggle = document.getElementById('frameToggle');
     const mainInterface = document.getElementById('mainInterface');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     if (frameToggle && mainInterface) {
-      frameToggle.addEventListener('click', () => {
-        const willCollapse = !mainInterface.classList.contains('interface-collapsed');
+      const setInterfaceState = (collapsed, spinClass = '') => {
         frameToggle.classList.remove('is-spinning-collapse', 'is-spinning-expand');
-        void frameToggle.offsetWidth;
-        frameToggle.classList.add(willCollapse ? 'is-spinning-collapse' : 'is-spinning-expand');
 
-        const collapsed = mainInterface.classList.toggle('interface-collapsed');
+        if (spinClass && !reducedMotion.matches) {
+          void frameToggle.offsetWidth;
+          frameToggle.classList.add(spinClass);
+        }
+
+        mainInterface.classList.toggle('interface-collapsed', collapsed);
         frameToggle.setAttribute('aria-pressed', String(collapsed));
         frameToggle.setAttribute('aria-label', collapsed ? 'Expand interface frame' : 'Collapse interface frame');
+
         if (collapsed && scannerPanel) {
           stopTypingPreview();
           scannerPanel.classList.remove('is-active', 'is-loading');
@@ -1670,10 +1719,38 @@
           }
         }
 
-        setTimeout(() => {
-          frameToggle.classList.remove('is-spinning-collapse', 'is-spinning-expand');
-        }, 680);
+        if (spinClass) {
+          setTimeout(() => {
+            frameToggle.classList.remove('is-spinning-collapse', 'is-spinning-expand');
+          }, 680);
+        }
+      };
+
+      frameToggle.addEventListener('click', () => {
+        const collapsed = mainInterface.classList.contains('interface-collapsed');
+        setInterfaceState(!collapsed, collapsed ? 'is-spinning-expand' : 'is-spinning-collapse');
       });
+
+      const runInterfaceIntro = () => {
+        if (!mainInterface.classList.contains('interface-collapsed')) return;
+
+        if (reducedMotion.matches) {
+          setInterfaceState(false);
+          return;
+        }
+
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            setInterfaceState(false, 'is-spinning-expand');
+          }, 220);
+        });
+      };
+
+      if (document.readyState === 'complete') {
+        runInterfaceIntro();
+      } else {
+        window.addEventListener('load', runInterfaceIntro, { once: true });
+      }
     }
   </script>
 </body>
