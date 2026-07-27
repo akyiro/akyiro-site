@@ -636,6 +636,87 @@
     }
     .tagline i { color: var(--orange); font-style: normal; margin: 0 10px; }
 
+    .release-countdown {
+      width: min(760px, 86%);
+      margin: 15px auto 2px;
+      padding: 10px 0 8px;
+      border-top: 1px solid rgba(222,108,31,.14);
+      border-bottom: 1px solid rgba(222,108,31,.10);
+      opacity: 0;
+      transform: translateY(8px);
+      animation: fade-up .8s ease .28s forwards;
+    }
+
+    .release-countdown__top,
+    .release-countdown__bottom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .release-countdown__top {
+      color: rgba(233,133,50,.80);
+      font: 600 .49rem/1.2 var(--ui);
+      letter-spacing: .26em;
+    }
+
+    .release-countdown__name {
+      color: rgba(244,238,233,.88);
+      letter-spacing: .19em;
+    }
+
+    .release-countdown__timer {
+      margin: 7px 0 5px;
+      color: rgba(244,238,233,.92);
+      font: 500 .68rem/1.25 var(--ui);
+      letter-spacing: .24em;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(255,118,26,.08);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .release-countdown__timer .unit { color: rgba(233,133,50,.84); }
+
+    .release-countdown__bottom {
+      color: rgba(169,156,148,.72);
+      font: 500 .43rem/1.2 var(--ui);
+      letter-spacing: .22em;
+    }
+
+    .release-countdown__sig {
+      position: relative;
+      display: inline-block;
+      width: 26px;
+      height: 1px;
+      overflow: hidden;
+      background: rgba(222,108,31,.16);
+    }
+
+    .release-countdown__sig::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -50%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,176,108,.76), transparent);
+      animation: countdown-signal 4.8s ease-in-out infinite;
+    }
+
+    .release-countdown.is-live .release-countdown__timer {
+      color: var(--orange-bright);
+      letter-spacing: .28em;
+    }
+
+    @keyframes countdown-signal {
+      0%, 52%, 100% { transform: translateX(0); opacity: .12; }
+      62% { opacity: .72; }
+      76% { transform: translateX(300%); opacity: .26; }
+    }
+
     .divider {
       position: relative;
       width: min(810px, 100%);
@@ -1364,6 +1445,12 @@
       .main-logo { width: min(242px, 72vw); }
       .tagline { font-size: 0.63rem; letter-spacing: 0.16em; line-height: 1.8; }
       .tagline i { margin: 0 6px; }
+      .release-countdown { width: min(94%, 430px); margin-top: 12px; padding: 9px 0 7px; }
+      .release-countdown__top { gap: 6px; font-size: .42rem; letter-spacing: .17em; }
+      .release-countdown__name { letter-spacing: .12em; }
+      .release-countdown__timer { font-size: .58rem; letter-spacing: .13em; }
+      .release-countdown__bottom { font-size: .40rem; letter-spacing: .16em; }
+      .release-countdown__sig { width: 14px; }
       .divider { margin: 14px auto 10px; }
       h2 { font-size: clamp(1.74rem, 9.2vw, 2.74rem); letter-spacing: 0.08em; }
       .ep-title {
@@ -1378,7 +1465,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .bg-scene, .main-logo, .tagline, .divider, .section, footer, .interface-core, .page::before, .page::after { transition: none !important; animation: none !important; opacity: 1 !important; transform: none !important; }
+      .bg-scene, .main-logo, .tagline, .release-countdown, .divider, .section, footer, .interface-core, .page::before, .page::after { transition: none !important; animation: none !important; opacity: 1 !important; transform: none !important; }
     }
   </style>
 </head>
@@ -1457,6 +1544,12 @@
 
     <div class="tagline">ambient <i>/</i> digital <i>/</i> melancholy</div>
 
+    <div class="release-countdown scan-target" id="releaseCountdown" tabindex="0" data-scan-title="THE LAST ORCHID" data-scan-lines="TYPE: SINGLE|STATUS: SCHEDULED|RELEASE: 04.08.2026|SIGNAL: INCOMING">
+      <div class="release-countdown__top"><span class="release-countdown__sig" aria-hidden="true"></span><span>incoming release // <span class="release-countdown__name">the last orchid</span></span><span class="release-countdown__sig" aria-hidden="true"></span></div>
+      <div class="release-countdown__timer" id="releaseCountdownTimer" aria-live="off">T - 00D : 00H : 00M : 00S</div>
+      <div class="release-countdown__bottom" id="releaseCountdownStatus">scheduled // 04.08.2026</div>
+    </div>
+
     <div class="divider"></div>
 
     <section class="section section--release">
@@ -1533,6 +1626,43 @@
     window.addEventListener('resize', () => requestAnimationFrame(resetParallax), { passive: true });
     desktopMotion.addEventListener('change', resetParallax);
     resetParallax();
+
+    const releaseCountdown = document.getElementById('releaseCountdown');
+    const releaseCountdownTimer = document.getElementById('releaseCountdownTimer');
+    const releaseCountdownStatus = document.getElementById('releaseCountdownStatus');
+
+    if (releaseCountdown && releaseCountdownTimer && releaseCountdownStatus) {
+      const releaseAt = new Date('2026-08-04T00:00:00+02:00').getTime();
+
+      const renderReleaseCountdown = () => {
+        const diff = releaseAt - Date.now();
+
+        if (diff <= 0) {
+          releaseCountdown.classList.add('is-live');
+          releaseCountdownTimer.textContent = 'SIGNAL LIVE';
+          releaseCountdownStatus.textContent = 'out now // 04.08.2026';
+          releaseCountdown.dataset.scanLines = 'TYPE: SINGLE|STATUS: OUT NOW|RELEASE: 04.08.2026|SIGNAL: LIVE';
+          return false;
+        }
+
+        const totalSeconds = Math.floor(diff / 1000);
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        const pad = (value) => String(value).padStart(2, '0');
+
+        releaseCountdownTimer.innerHTML =
+          `T - <span class="unit">${pad(days)}D</span> : ${pad(hours)}H : ${pad(minutes)}M : ${pad(seconds)}S`;
+        return true;
+      };
+
+      if (renderReleaseCountdown()) {
+        const countdownTick = window.setInterval(() => {
+          if (!renderReleaseCountdown()) window.clearInterval(countdownTick);
+        }, 1000);
+      }
+    }
 
     const scannerPanel = document.getElementById('scannerPanel');
     const scannerStatus = document.getElementById('scannerStatus');
