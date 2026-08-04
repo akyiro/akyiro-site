@@ -19,8 +19,9 @@
   <meta name="twitter:image" content="https://akyiro.xyz/assets/og-image.png">
 
   <link rel="icon" href="./assets/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
     :root {
@@ -59,7 +60,7 @@
       background:
         linear-gradient(180deg, rgba(6, 2, 1, 0.28) 0%, rgba(6, 2, 1, 0.18) 32%, rgba(6, 2, 1, 0.50) 100%),
         linear-gradient(90deg, rgba(0,0,0,0.42), rgba(0,0,0,0.08) 20%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.08) 80%, rgba(0,0,0,0.42)),
-        url("./assets/hero-bg.png") center center / cover no-repeat;
+        url("./assets/hero-bg.webp") center center / cover no-repeat;
       transform: translate3d(0,0,0) scale(1.045);
       will-change: transform, background-position;
       transition: transform .22s ease-out;
@@ -569,6 +570,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      height: auto;
       margin: 0 auto 4px;
       opacity: 0;
       filter: drop-shadow(0 0 8px rgba(255, 118, 26, 0.28)) drop-shadow(0 0 28px rgba(255, 118, 26, 0.12));
@@ -814,14 +816,12 @@
     }
 
     .icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      display: block;
       flex: 0 0 1.12rem;
       width: 1.12rem;
-      line-height: 1;
+      height: 1.12rem;
       color: var(--orange);
-      font-size: 1.08rem;
+      fill: currentColor;
       transform: translateY(-0.04em);
       filter: drop-shadow(0 0 7px rgba(255, 119, 26, 0.20));
     }
@@ -1608,10 +1608,6 @@
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.014), 0 10px 32px rgba(0,0,0,.12);
       overflow: hidden;
     }
-    .release-video-card:has(.release-video-embed)::before,
-    .release-video-card:has(.release-video-embed)::after {
-      display: none;
-    }
     .release-video-embed {
       position: absolute;
       inset: 0;
@@ -1620,12 +1616,90 @@
       height: 100%;
       display: block;
       border: 0;
+      background: #000;
+    }
+    .release-video-card.has-player::before,
+    .release-video-card.has-player::after {
+      display: none;
+    }
+    .visualizer-launch {
+      appearance: none;
+      width: 100%;
+      border: 0;
+      color: inherit;
+      background: transparent;
+      cursor: pointer;
+      font: inherit;
+    }
+    .visualizer-launch:focus-visible {
+      outline: 1px solid rgba(255, 153, 69, .92);
+      outline-offset: -5px;
+    }
+    .visualizer-launch__label {
+      color: rgba(255, 245, 236, .82);
+      font: 600 .50rem/1 var(--ui);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      text-shadow: 0 1px 10px rgba(0,0,0,.72);
+    }
+    .visualizer-launch:hover .release-video-card__play,
+    .visualizer-launch:focus-visible .release-video-card__play {
+      border-color: rgba(255,255,255,.92);
+      transform: scale(1.06);
+      box-shadow: 0 0 24px rgba(255, 128, 38, .22);
+    }
+    .visualizer-launch .release-video-card__play {
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+    .visualizer-status {
+      color: rgba(255, 239, 226, .72);
+      font: 500 .43rem/1 var(--ui);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .visualizer-status span:last-child { color: rgba(255, 151, 63, .88); }
+    .visualizer-youtube-link {
+      position: absolute;
+      right: 8px;
+      bottom: 7px;
+      z-index: 5;
+      padding: 5px 7px;
+      color: rgba(255,255,255,.84);
+      background: rgba(0,0,0,.66);
+      border: 1px solid rgba(255,255,255,.16);
+      text-decoration: none;
+      font: 600 .42rem/1 var(--ui);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(3px);
+      transition: opacity .2s ease, transform .2s ease, border-color .2s ease;
+    }
+    .release-video-card:hover .visualizer-youtube-link,
+    .release-video-card:focus-within .visualizer-youtube-link,
+    .release-video-card.has-player .visualizer-youtube-link,
+    .release-video-card.embed-unavailable .visualizer-youtube-link {
+      opacity: 1;
+      transform: none;
+    }
+    .visualizer-youtube-link:hover,
+    .visualizer-youtube-link:focus-visible {
+      border-color: rgba(255, 151, 63, .82);
+      outline: none;
+    }
+    .release-video-card.embed-unavailable .release-video-card__play::before {
+      border: 0;
+      width: 18px;
+      height: 2px;
+      background: rgba(255,245,236,.94);
+      box-shadow: 0 -6px 0 rgba(255,245,236,.94), 0 6px 0 rgba(255,245,236,.94);
+      transform: translate(-50%, -50%);
     }
     .release-video-card::before {
       content: "";
       position: absolute;
       inset: -4%;
-      background: linear-gradient(180deg, rgba(10,3,1,.22), rgba(10,3,1,.56)), url('./assets/the-last-orchid-cover.png') center / cover no-repeat;
+      background: linear-gradient(180deg, rgba(10,3,1,.22), rgba(10,3,1,.56)), url('./assets/the-last-orchid-cover.webp') center / cover no-repeat;
       filter: blur(8px) saturate(.90) brightness(.36);
       transform: scale(1.045);
     }
@@ -1693,7 +1767,7 @@
       border: 1px solid rgba(222,108,31,.34);
       background:
         linear-gradient(180deg, rgba(8,3,1,.15), rgba(8,3,1,.52)),
-        url('./assets/hero-bg.png') center 66% / cover no-repeat;
+        url('./assets/hero-bg.webp') center 66% / cover no-repeat;
       clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
     }
     .section--ep .eyebrow { margin-bottom: 6px; }
@@ -2100,13 +2174,13 @@
       .release-streams .button {
         letter-spacing: .15em;
       }
-      .release-streams .button .icon { font-size: 17px; }
+      .release-streams .button .icon { width: 17px; height: 17px; flex-basis: 17px; }
       .release-video-card {
         aspect-ratio: auto;
       }
       .release-video-card::before {
         inset: 0;
-        background: linear-gradient(180deg, rgba(10,3,1,.08), rgba(10,3,1,.20)), url('./assets/hero-bg.png') center 68% / cover no-repeat;
+        background: linear-gradient(180deg, rgba(10,3,1,.08), rgba(10,3,1,.20)), url('./assets/hero-bg.webp') center 68% / cover no-repeat;
         filter: saturate(.78) brightness(.52) contrast(1.08);
         transform: none;
       }
@@ -2130,8 +2204,6 @@
       .yt-title { flex: 1; }
       .yt-actions { font-size: 12px; letter-spacing: .08em; }
       .yt-bottom { justify-content: space-between; padding-top: 8px; font-size: 8px; }
-      .yt-progress { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #f00 0 2%, rgba(255,255,255,.35) 2% 100%); }
-      .yt-brand { font-weight: 600; }
       .section--ep {
         position: relative;
         overflow: visible;
@@ -2144,7 +2216,7 @@
         font-size: 7px;
         letter-spacing: .25em;
       }
-      .ep-thumb { background: linear-gradient(180deg, rgba(8,3,1,.10), rgba(8,3,1,.42)), url('./assets/the-last-orchid-cover.png') center 56% / cover no-repeat; }
+      .ep-thumb { background: linear-gradient(180deg, rgba(8,3,1,.10), rgba(8,3,1,.42)), url('./assets/the-last-orchid-cover.webp') center 56% / cover no-repeat; }
       .section--ep .status { margin-top: 7px; font-size: 9px; color: var(--orange-bright); }
       .ep-action { min-width: 110px; min-height: 38px; margin-right: 7px; font-size: 9px; }
 
@@ -2517,7 +2589,7 @@
     @media (min-width: 961px) {
       body { padding-top: 45px; }
       .bg-scene {
-        background: url("./assets/hero-bg.png") center center / cover no-repeat;
+        background: url("./assets/hero-bg.webp") center center / cover no-repeat;
       }
       body::before {
         background:
@@ -3076,7 +3148,7 @@
 
     <div class="interface-core" id="interfaceCore">
       <header class="identity-block">
-        <img class="main-logo scan-logo scan-target" tabindex="0" data-scan-title="AKYIRO" data-scan-lines="ARTIST: AKYIRO|STYLE: AMBIENT / DIGITAL / MELANCHOLY|FOCUS: CINEMATIC|STATUS: INDEPENDENT PROJECT" src="./assets/akyiro-logo-full-transparent.png" alt="akyiro logo">
+        <img class="main-logo scan-logo scan-target" tabindex="0" data-scan-title="AKYIRO" data-scan-lines="ARTIST: AKYIRO|STYLE: AMBIENT / DIGITAL / MELANCHOLY|FOCUS: CINEMATIC|STATUS: INDEPENDENT PROJECT" src="./assets/akyiro-logo-full-transparent.webp" width="2560" height="2000" decoding="async" fetchpriority="high" alt="akyiro logo">
         <div class="tagline">ambient <i>/</i> digital <i>/</i> melancholy</div>
       </header>
 
@@ -3088,7 +3160,7 @@
           <div class="release-overview">
             <div class="release-art-column">
               <div class="release-cover scan-target" tabindex="0" data-scan-title="THE LAST ORCHID" data-scan-lines="TYPE: SINGLE|STATUS: OUT NOW|RELEASE: 04.08.2026|ART: OFFICIAL COVER">
-                <img src="./assets/the-last-orchid-cover.png" alt="the last orchid cover art">
+                <img src="./assets/the-last-orchid-cover.webp" width="2048" height="2048" decoding="async" alt="the last orchid cover art">
               </div>
               <div class="release-cover-label">cover art // official</div>
             </div>
@@ -3099,17 +3171,32 @@
               <div class="listen">listen now_</div>
 
               <div class="release-streams">
-                <a class="button scan-target" data-scan-title="SPOTIFY" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN STREAM|LINK: EXTERNAL" href="https://open.spotify.com/track/7A5TPKtN7JJmlLvbzolFsm?si=3a0e08943a044c5a" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-spotify icon" aria-hidden="true"></i><span>Spotify</span><b>›</b></a>
-                <a class="button scan-target" data-scan-title="APPLE MUSIC" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN STREAM|LINK: EXTERNAL" href="https://music.apple.com/us/album/the-last-orchid-single/6795237989" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-apple icon" aria-hidden="true"></i><span>Apple Music</span><b>›</b></a>
-                <a class="button scan-target" data-scan-title="YOUTUBE MUSIC" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN STREAM|LINK: EXTERNAL" href="https://youtu.be/IYysy0r-EEg?si=VHtbHBA3yI9jDmRn" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube icon" aria-hidden="true"></i><span>YouTube Music</span><b>›</b></a>
+                <a class="button scan-target" data-scan-title="SPOTIFY" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN STREAM|LINK: EXTERNAL" href="https://open.spotify.com/track/7A5TPKtN7JJmlLvbzolFsm?si=3a0e08943a044c5a" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false"><path d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"></path></svg><span>Spotify</span><b>›</b></a>
+                <a class="button scan-target" data-scan-title="APPLE MUSIC" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN STREAM|LINK: EXTERNAL" href="https://music.apple.com/us/album/the-last-orchid-single/6795237989" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path></svg><span>Apple Music</span><b>›</b></a>
+                <a class="button scan-target" data-scan-title="YOUTUBE MUSIC" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN STREAM|LINK: EXTERNAL" href="https://youtu.be/IYysy0r-EEg?si=VHtbHBA3yI9jDmRn" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path d="M80 64H496C540.2 64 576 99.8 576 144V368C576 412.2 540.2 448 496 448H80C35.8 448 0 412.2 0 368V144C0 99.8 35.8 64 80 64Z"></path><path d="M232 176V336L376 256Z" fill="#050201"></path></svg><span>YouTube Music</span><b>›</b></a>
               </div>
             </div>
           </div>
 
           <div class="release-video">
             <div class="module-label">// visualizer</div>
-            <div class="release-video-card scan-target" tabindex="0" data-scan-title="OFFICIAL VISUALIZER" data-scan-lines="SOURCE: YOUTUBE|STATUS: OUT NOW|FEED: VISUALIZER MODULE|SIGNAL: LIVE">
-              <iframe class="release-video-embed" src="https://www.youtube.com/embed/Y9iE4OPWao0?origin=https%3A%2F%2Fakyiro.xyz&rel=0" title="akyiro - the last orchid official visualizer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <div class="release-video-card scan-target" id="visualizerCard" data-video-id="Y9iE4OPWao0" data-scan-title="OFFICIAL VISUALIZER" data-scan-lines="SOURCE: YOUTUBE|STATUS: OUT NOW|FEED: VISUALIZER MODULE|SIGNAL: LIVE">
+              <div class="release-video-card__inner" id="visualizerFacade">
+                <div class="yt-top">
+                  <span class="yt-avatar">A</span>
+                  <span class="yt-title">akyiro - the last orchid (official visualizer)</span>
+                  <span class="yt-actions">↗</span>
+                </div>
+                <button class="release-video-card__center visualizer-launch" id="visualizerLaunch" type="button" aria-label="Play akyiro - the last orchid official visualizer">
+                  <span class="release-video-card__play" aria-hidden="true"></span>
+                  <span class="visualizer-launch__label">play visualizer</span>
+                </button>
+                <div class="yt-bottom visualizer-status" id="visualizerStatus">
+                  <span>youtube embed // ready</span>
+                  <span>click to initialize</span>
+                </div>
+              </div>
+              <a class="visualizer-youtube-link" href="https://www.youtube.com/watch?v=Y9iE4OPWao0" target="_blank" rel="noopener noreferrer" aria-label="Watch the visualizer directly on YouTube">YouTube ↗</a>
             </div>
           </div>
         </div>
@@ -3128,9 +3215,9 @@
       <section class="section section--links compact-module links-module">
         <div class="eyebrow">// personal links_</div>
         <div class="buttons">
-          <a class="button scan-target" data-scan-placement="bottom" data-scan-title="INSTAGRAM" data-scan-lines="CHANNEL: @AKYIRO.MUSIC|TYPE: SOCIAL FEED|LINK: EXTERNAL|STATUS: CONNECTED" href="https://www.instagram.com/akyiro.music" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram icon" aria-hidden="true"></i><span>Instagram</span></a>
-          <a class="button scan-target" data-scan-placement="bottom" data-scan-title="TIKTOK" data-scan-lines="CHANNEL: @AKYIRO|TYPE: SHORT SIGNALS|LINK: EXTERNAL|STATUS: CONNECTED" href="https://www.tiktok.com/@akyiro" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-tiktok icon" aria-hidden="true"></i><span>TikTok</span></a>
-          <a class="button scan-target" data-scan-placement="bottom" data-scan-title="YOUTUBE" data-scan-lines="CHANNEL: @AKYIRO|TYPE: VISUAL ARCHIVE|LINK: EXTERNAL|STATUS: CONNECTED" href="https://www.youtube.com/@akyiro" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-youtube icon" aria-hidden="true"></i><span>YouTube</span></a>
+          <a class="button scan-target" data-scan-placement="bottom" data-scan-title="INSTAGRAM" data-scan-lines="CHANNEL: @AKYIRO.MUSIC|TYPE: SOCIAL FEED|LINK: EXTERNAL|STATUS: CONNECTED" href="https://www.instagram.com/akyiro.music" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg><span>Instagram</span></a>
+          <a class="button scan-target" data-scan-placement="bottom" data-scan-title="TIKTOK" data-scan-lines="CHANNEL: @AKYIRO|TYPE: SHORT SIGNALS|LINK: EXTERNAL|STATUS: CONNECTED" href="https://www.tiktok.com/@akyiro" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"></path></svg><span>TikTok</span></a>
+          <a class="button scan-target" data-scan-placement="bottom" data-scan-title="YOUTUBE" data-scan-lines="CHANNEL: @AKYIRO|TYPE: VISUAL ARCHIVE|LINK: EXTERNAL|STATUS: CONNECTED" href="https://www.youtube.com/@akyiro" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path d="M80 64H496C540.2 64 576 99.8 576 144V368C576 412.2 540.2 448 496 448H80C35.8 448 0 412.2 0 368V144C0 99.8 35.8 64 80 64Z"></path><path d="M232 176V336L376 256Z" fill="#050201"></path></svg><span>YouTube</span></a>
         </div>
       </section>
 
@@ -3138,6 +3225,55 @@
     </div>
   </main>
   <script>
+    const visualizerCard = document.getElementById('visualizerCard');
+    const visualizerFacade = document.getElementById('visualizerFacade');
+    const visualizerLaunch = document.getElementById('visualizerLaunch');
+    const visualizerStatus = document.getElementById('visualizerStatus');
+    const visualizerVideoId = visualizerCard?.dataset.videoId;
+
+    const setVisualizerStatus = (primary, secondary) => {
+      if (!visualizerStatus) return;
+      visualizerStatus.innerHTML = `<span>${primary}</span><span>${secondary}</span>`;
+    };
+
+    const buildVisualizerUrl = () => {
+      if (!visualizerVideoId) return '';
+      const params = new URLSearchParams({
+        autoplay: '1',
+        playsinline: '1',
+        rel: '0',
+        enablejsapi: '1',
+        origin: window.location.origin,
+        widget_referrer: window.location.href.split('#')[0]
+      });
+      return `https://www.youtube-nocookie.com/embed/${visualizerVideoId}?${params.toString()}`;
+    };
+
+    const loadVisualizer = () => {
+      if (!visualizerCard || !visualizerVideoId || visualizerCard.classList.contains('has-player')) return;
+
+      // file:// cannot provide the HTTP origin/referrer YouTube requires.
+      if (!/^https?:$/.test(window.location.protocol)) {
+        visualizerCard.classList.add('embed-unavailable');
+        setVisualizerStatus('local file mode', 'run OPEN_LOCAL_PREVIEW.bat');
+        return;
+      }
+
+      const iframe = document.createElement('iframe');
+      iframe.className = 'release-video-embed';
+      iframe.src = buildVisualizerUrl();
+      iframe.title = 'akyiro - the last orchid official visualizer';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allowFullscreen = true;
+
+      if (visualizerFacade) visualizerFacade.replaceWith(iframe);
+      else visualizerCard.prepend(iframe);
+      visualizerCard.classList.add('has-player');
+    };
+
+    visualizerLaunch?.addEventListener('click', loadVisualizer);
+
     const bg = document.querySelector('.bg-scene');
     const bgGrid = document.querySelector('.bg-grid');
     const sideFloats = document.querySelectorAll('.side-float');
@@ -3168,17 +3304,30 @@
     };
 
     const syncMobileBackgroundHeight = () => {
-      if (!bg || window.innerWidth > 720) return;
+      if (!bg) return;
+      if (window.innerWidth > 720) {
+        bg.style.removeProperty('height');
+        return;
+      }
       bg.style.height = `${document.documentElement.scrollHeight}px`;
     };
 
+    let viewportRaf = 0;
+    const syncViewport = () => {
+      cancelAnimationFrame(viewportRaf);
+      viewportRaf = requestAnimationFrame(() => {
+        resetParallax();
+        syncMobileBackgroundHeight();
+      });
+    };
+
     window.addEventListener('load', syncMobileBackgroundHeight, { once: true });
-    window.addEventListener('orientationchange', () => setTimeout(syncMobileBackgroundHeight, 150), { passive: true });
+    window.addEventListener('orientationchange', () => setTimeout(syncViewport, 150), { passive: true });
     window.addEventListener('pointermove', updateParallax, { passive: true });
     window.addEventListener('mouseleave', resetParallax);
-    window.addEventListener('resize', () => requestAnimationFrame(resetParallax), { passive: true });
-    desktopMotion.addEventListener('change', resetParallax);
-    resetParallax();
+    window.addEventListener('resize', syncViewport, { passive: true });
+    desktopMotion.addEventListener('change', syncViewport);
+    syncViewport();
     const scannerPanel = document.getElementById('scannerPanel');
     const scannerStatus = document.getElementById('scannerStatus');
     const scannerTitle = document.getElementById('scannerTitle');
@@ -3201,8 +3350,9 @@
     const SCANNER_MARGIN = 20;
     const SCANNER_GAP = 18;
 
-    if (desktopScanner.matches && tacticalCursor) {
+    if (tacticalCursor) {
       window.addEventListener('pointermove', (event) => {
+        if (!desktopScanner.matches) return;
         scannerPointerX = event.clientX;
         tacticalCursor.style.transform = `translate(${event.clientX - 16}px, ${event.clientY - 16}px)`;
       }, { passive: true });
@@ -3520,6 +3670,41 @@
     if (frameToggle && mainInterface) {
       let hudTransitionTimer;
       let hudTransitioning = false;
+      let hudBootTimers = [];
+
+      const clearHudBootTimers = () => {
+        hudBootTimers.forEach((timer) => clearTimeout(timer));
+        hudBootTimers = [];
+      };
+
+      const stopHudBoot = () => {
+        clearHudBootTimers();
+        mainInterface.classList.remove('is-booting');
+        document.body.classList.remove('hud-booting');
+      };
+
+      const playHudBoot = (restart = false) => {
+        clearHudBootTimers();
+
+        if (reducedMotion.matches) {
+          stopHudBoot();
+          return;
+        }
+
+        if (restart) {
+          mainInterface.classList.remove('is-booting');
+          document.body.classList.remove('hud-booting');
+          void mainInterface.offsetWidth;
+          void document.body.offsetWidth;
+        }
+
+        mainInterface.classList.add('is-booting');
+        document.body.classList.add('hud-booting');
+        hudBootTimers = [
+          setTimeout(() => mainInterface.classList.remove('is-booting'), 1320),
+          setTimeout(() => document.body.classList.remove('hud-booting'), 1420)
+        ];
+      };
 
       const setInterfaceState = (collapsed, spinClass = '') => {
         if (hudTransitioning) return;
@@ -3539,8 +3724,7 @@
         if (collapsed && !reducedMotion.matches) {
           hudTransitioning = true;
           resetScanner();
-          mainInterface.classList.remove('is-booting');
-          document.body.classList.remove('hud-booting');
+          stopHudBoot();
           mainInterface.classList.add('is-shutting-down');
           document.body.classList.add('hud-shutting');
           syncToggleState();
@@ -3561,19 +3745,8 @@
           syncToggleState();
         }
 
-        if (!collapsed && !reducedMotion.matches) {
-          document.body.classList.remove('hud-booting');
-          void document.body.offsetWidth;
-          document.body.classList.add('hud-booting');
-          mainInterface.classList.remove('is-booting');
-          void mainInterface.offsetWidth;
-          mainInterface.classList.add('is-booting');
-          setTimeout(() => mainInterface.classList.remove('is-booting'), 1180);
-          setTimeout(() => document.body.classList.remove('hud-booting'), 1400);
-        } else if (collapsed) {
-          mainInterface.classList.remove('is-booting');
-          document.body.classList.remove('hud-booting');
-        }
+        if (!collapsed) playHudBoot(true);
+        else stopHudBoot();
 
         if (collapsed && scannerPanel) {
           resetScanner();
@@ -3611,36 +3784,10 @@
         setInterfaceState(!collapsed, collapsed ? 'is-spinning-expand' : 'is-spinning-collapse');
       });
 
-      const runInterfaceIntro = () => {
-        if (reducedMotion.matches) {
-          setInterfaceState(false);
-          return;
-        }
-
-        if (!mainInterface.classList.contains('interface-collapsed')) {
-          document.body.classList.remove('hud-booting');
-          void document.body.offsetWidth;
-          document.body.classList.add('hud-booting');
-          mainInterface.classList.remove('is-booting');
-          void mainInterface.offsetWidth;
-          mainInterface.classList.add('is-booting');
-          setTimeout(() => mainInterface.classList.remove('is-booting'), 1180);
-          setTimeout(() => document.body.classList.remove('hud-booting'), 1400);
-          return;
-        }
-
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            setInterfaceState(false, 'is-spinning-expand');
-          }, 220);
-        });
-      };
-
-      if (document.readyState === 'complete') {
-        runInterfaceIntro();
-      } else {
-        window.addEventListener('load', runInterfaceIntro, { once: true });
-      }
+      // The boot classes are present in the HTML, so the intro begins during the
+      // first render. Only schedule cleanup here; restarting on window.load was
+      // the source of the visible double-loading effect.
+      playHudBoot(false);
     }
   </script>
 </body>
