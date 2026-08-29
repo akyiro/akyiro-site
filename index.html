@@ -1699,9 +1699,17 @@
       content: "";
       position: absolute;
       inset: -4%;
-      background: linear-gradient(180deg, rgba(10,3,1,.22), rgba(10,3,1,.56)), url('./assets/the-last-orchid-cover.webp') center / cover no-repeat;
+      background-image:
+        linear-gradient(180deg, rgba(10,3,1,.22), rgba(10,3,1,.56)),
+        var(--visualizer-cover-image, url('./assets/the-last-orchid-cover.webp'));
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
       filter: blur(8px) saturate(.90) brightness(.36);
       transform: scale(1.045);
+    }
+    .latest-visualizer .release-video-card {
+      --visualizer-cover-image: url('./assets/soundscape-to-ardor-cover.webp');
     }
     .release-video-card::after {
       content: "";
@@ -2180,7 +2188,12 @@
       }
       .release-video-card::before {
         inset: 0;
-        background: linear-gradient(180deg, rgba(10,3,1,.08), rgba(10,3,1,.20)), url('./assets/hero-bg.webp') center 68% / cover no-repeat;
+        background-image:
+          linear-gradient(180deg, rgba(10,3,1,.08), rgba(10,3,1,.20)),
+          var(--visualizer-cover-image, url('./assets/the-last-orchid-cover.webp'));
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
         filter: saturate(.78) brightness(.52) contrast(1.08);
         transform: none;
       }
@@ -4377,6 +4390,7 @@
         title: 'soundscape to ardor',
         meta: 'out now // cover single',
         cover: './assets/soundscape-to-ardor-cover-thumb.webp',
+        visualizerCover: './assets/soundscape-to-ardor-cover.webp',
         visualizer: {
           videoId: 'eoAEQSasKfk',
           title: 'akyiro - soundscape to ardor (visualizer)',
@@ -4392,6 +4406,7 @@
         title: 'the last orchid',
         meta: '04.08.2026 // single',
         cover: './assets/the-last-orchid-cover-thumb.webp',
+        visualizerCover: './assets/the-last-orchid-cover.webp',
         visualizer: {
           videoId: 'Y9iE4OPWao0',
           title: 'akyiro - the last orchid (official visualizer)',
@@ -4436,6 +4451,8 @@
               </div>
             </div>
           </div>`;
+        const pendingCard = dossierVisualizer.querySelector('.release-video-card');
+        pendingCard?.style.setProperty('--visualizer-cover-image', `url("${release.visualizerCover || release.cover}")`);
         return;
       }
 
@@ -4455,6 +4472,8 @@
           </div>
           <a class="visualizer-youtube-link" href="${video.directUrl}" target="_blank" rel="noopener noreferrer" aria-label="Watch ${video.title} directly on YouTube">YouTube ↗</a>
         </div>`;
+      const visualizerCard = dossierVisualizer.querySelector('.release-video-card');
+      visualizerCard?.style.setProperty('--visualizer-cover-image', `url("${release.visualizerCover || release.cover}")`);
     };
 
     const renderReleaseDossier = (release) => {
