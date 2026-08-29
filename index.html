@@ -3413,6 +3413,17 @@
       text-align: center;
       text-transform: uppercase;
     }
+    .release-dossier__credit {
+      position: relative;
+      z-index: 1;
+      margin-top: 5px;
+      color: rgba(225,210,199,.72);
+      font: 500 .38rem/1.2 var(--ui);
+      letter-spacing: .075em;
+      text-align: center;
+      text-transform: none;
+    }
+    .release-dossier__credit:empty { display: none; }
     .release-dossier__section-label {
       position: relative;
       z-index: 1;
@@ -4222,14 +4233,14 @@
         <div class="release-module">
           <div class="release-overview">
             <div class="release-art-column">
-              <div class="release-cover scan-target" tabindex="0" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|PROFILE: CINEMATIC / AMBIENT|STATUS: OUT NOW">
+              <div class="release-cover scan-target" tabindex="0" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|COVER ART: SERHII STOVBA|PROFILE: CINEMATIC / AMBIENT|STATUS: OUT NOW">
                 <img src="./assets/soundscape-to-ardor-cover.webp" width="2048" height="2048" decoding="async" alt="soundscape to ardor cover art">
               </div>
               <div class="release-cover-label">cover art // official</div>
             </div>
 
             <div class="release-info">
-              <div class="release-live-title scan-heading scan-target" tabindex="0" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|ARRANGEMENT: AKYIRO|SIGNAL: MELANCHOLIC / CINEMATIC|RELEASE: OUT NOW">soundscape to ardor</div>
+              <div class="release-live-title scan-heading scan-target" tabindex="0" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|ARRANGEMENT: AKYIRO|COVER ART: SERHII STOVBA|SIGNAL: MELANCHOLIC / CINEMATIC|RELEASE: OUT NOW">soundscape to ardor</div>
               <div class="release-live-status">out now</div>
               <div class="listen">release links_</div>
 
@@ -4270,7 +4281,7 @@
         <div class="discography-module compact-module">
           <div class="discography-strip" aria-label="Discography releases">
             <article class="discography-entry" data-release-id="soundscape-to-ardor">
-              <button class="discography-cover scan-target" type="button" data-release-dossier="soundscape-to-ardor" aria-expanded="false" aria-controls="releaseDossier" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|STATUS: OUT NOW|ACTION: OPEN RELEASE FILE">
+              <button class="discography-cover scan-target" type="button" data-release-dossier="soundscape-to-ardor" aria-expanded="false" aria-controls="releaseDossier" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|COVER ART: SERHII STOVBA|STATUS: OUT NOW|ACTION: OPEN RELEASE FILE">
                 <img src="./assets/soundscape-to-ardor-cover-thumb.webp" width="320" height="320" decoding="async" loading="lazy" alt="soundscape to ardor cover art">
               </button>
               <div class="discography-copy">
@@ -4303,6 +4314,7 @@
             </div>
             <div class="release-dossier__title" id="releaseDossierTitle">the last orchid</div>
             <div class="release-dossier__meta" id="releaseDossierMeta">04.08.2026 // single</div>
+            <div class="release-dossier__credit" id="releaseDossierCredit"></div>
             <div class="release-dossier__section-label">// listen on</div>
             <div class="release-dossier__links" id="releaseDossierLinks"></div>
             <div class="release-dossier__section-label">// additional content</div>
@@ -4389,6 +4401,7 @@
       'soundscape-to-ardor': {
         title: 'soundscape to ardor',
         meta: 'out now // cover single',
+        credit: 'cover art by Serhii Stovba',
         cover: './assets/soundscape-to-ardor-cover-thumb.webp',
         visualizerCover: './assets/soundscape-to-ardor-cover.webp',
         visualizer: {
@@ -4427,6 +4440,7 @@
     const dossierCover = document.getElementById('releaseDossierCover');
     const dossierTitle = document.getElementById('releaseDossierTitle');
     const dossierMeta = document.getElementById('releaseDossierMeta');
+    const dossierCredit = document.getElementById('releaseDossierCredit');
     const dossierVisualizer = document.getElementById('releaseDossierVisualizer');
     const dossierLinks = document.getElementById('releaseDossierLinks');
     const dossierTriggers = document.querySelectorAll('[data-release-dossier]');
@@ -4480,6 +4494,7 @@
       if (!release || !dossier) return;
       dossierTitle.textContent = release.title;
       dossierMeta.textContent = release.meta;
+      if (dossierCredit) dossierCredit.textContent = release.credit || '';
       dossierCover.src = release.cover;
       dossierCover.alt = `${release.title} cover art`;
       renderDossierVisualizer(release);
