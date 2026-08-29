@@ -3075,7 +3075,1040 @@
       body.hud-shutting .hud-rail::before { animation: none !important; }
     }
 
-  </style>
+    /* v77 // compact release popup + horizontal discography showcase */
+    /* Keep the single-pass boot behavior introduced in v73/v75. */
+    .section { opacity: 1; transform: none; animation: none; }
+
+    .section--discography { animation-delay: .58s; }
+    .section--ep { animation-delay: .70s; }
+    .section--links { animation-delay: .82s; }
+
+    .section--discography .eyebrow {
+      margin: 0 0 9px;
+      color: rgba(233,133,50,.86);
+      font: 600 .48rem/1 var(--ui);
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      text-align: left;
+    }
+
+    .release-streams .button.is-pending {
+      color: rgba(239,232,226,.60);
+      border-color: rgba(222,108,31,.20);
+      background: rgba(255,126,31,.010);
+      cursor: default;
+      opacity: .76;
+      transform: none;
+    }
+    .release-streams .button.is-pending::before { display: none; }
+    .release-streams .button.is-pending::after {
+      background: rgba(255,151,63,.52);
+      box-shadow: 0 0 6px rgba(255,151,63,.22);
+    }
+    .release-streams .button.is-pending:hover,
+    .release-streams .button.is-pending:focus-visible {
+      transform: none;
+      color: rgba(239,232,226,.72);
+      border-color: rgba(255,153,69,.32);
+      background: rgba(255,126,31,.018);
+    }
+    .release-streams .button.is-pending b {
+      color: rgba(255,151,63,.62);
+      letter-spacing: .05em;
+    }
+
+    .latest-visualizer { margin-top: 18px; }
+    .visualizer-card--pending { cursor: default; }
+    .visualizer-card--pending .release-video-card__play {
+      opacity: .48;
+      filter: saturate(.6);
+    }
+    .visualizer-card--pending .release-video-card__play::before { opacity: .64; }
+    .visualizer-pending-center { pointer-events: none; gap: 10px; }
+    .visualizer-pending-label {
+      color: rgba(239,232,226,.72);
+      font: 600 .48rem/1 var(--ui);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    /* Discography is a horizontal visual shelf. */
+    .discography-module {
+      position: relative;
+      margin-top: 0;
+      padding: 8px 9px 6px;
+      overflow: hidden;
+    }
+    .discography-module::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      right: 9px;
+      bottom: 6px;
+      height: 1px;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(255,151,63,.22), rgba(255,151,63,.055) 62%, transparent);
+    }
+    .discography-strip {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+      padding: 1px 1px 6px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-inline: contain;
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,151,63,.24) rgba(0,0,0,.08);
+    }
+    .discography-strip::-webkit-scrollbar { height: 3px; }
+    .discography-strip::-webkit-scrollbar-track { background: rgba(0,0,0,.08); }
+    .discography-strip::-webkit-scrollbar-thumb { background: rgba(255,151,63,.24); }
+
+    .discography-entry {
+      flex: 0 0 108px;
+      min-width: 0;
+      scroll-snap-align: start;
+    }
+    .discography-cover {
+      appearance: none;
+      position: relative;
+      display: block;
+      width: 108px;
+      aspect-ratio: 1;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255,145,61,.29);
+      background: rgba(8,3,1,.28);
+      color: inherit;
+      cursor: pointer;
+      clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+      transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease, background .22s ease;
+    }
+    .discography-cover::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent 58%, rgba(5,2,1,.24));
+      opacity: .55;
+      transition: opacity .22s ease;
+    }
+    .discography-cover::after {
+      content: "↗";
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      z-index: 3;
+      width: 19px;
+      height: 19px;
+      display: grid;
+      place-items: center;
+      color: rgba(255,236,220,.78);
+      border: 1px solid rgba(255,151,63,.33);
+      background: rgba(6,2,1,.63);
+      font: 500 .48rem/1 var(--ui);
+      opacity: .62;
+      transform: translateY(0);
+      transition: opacity .22s ease, border-color .22s ease, color .22s ease, transform .22s ease;
+    }
+    .discography-cover img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .34s cubic-bezier(.2,.72,.2,1), filter .28s ease;
+    }
+    .discography-cover:hover,
+    .discography-cover:focus-visible,
+    .discography-cover[aria-expanded="true"] {
+      border-color: rgba(255,153,69,.66);
+      box-shadow: 0 0 0 1px rgba(255,151,63,.08), 0 8px 22px rgba(0,0,0,.22);
+      transform: translateY(-2px);
+      outline: none;
+    }
+    .discography-cover:hover img,
+    .discography-cover:focus-visible img,
+    .discography-cover[aria-expanded="true"] img {
+      transform: scale(1.035);
+      filter: brightness(1.06) saturate(1.02);
+    }
+    .discography-cover:hover::after,
+    .discography-cover:focus-visible::after,
+    .discography-cover[aria-expanded="true"]::after {
+      opacity: 1;
+      color: #fff;
+      border-color: rgba(255,153,69,.70);
+      transform: translateY(-1px);
+    }
+    .discography-cover:hover::before,
+    .discography-cover:focus-visible::before,
+    .discography-cover[aria-expanded="true"]::before { opacity: .28; }
+
+    .discography-copy { padding: 5px 2px 0; min-width: 0; }
+    .discography-title {
+      color: rgba(245,239,234,.91);
+      font: 500 .66rem/1.14 var(--ui);
+      letter-spacing: .025em;
+      text-transform: lowercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .discography-meta {
+      margin-top: 3px;
+      color: rgba(181,165,155,.72);
+      font: 500 .36rem/1.15 var(--ui);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* Compact release popup. It floats only when a genuine free HUD lane exists. */
+    .release-dossier-slot {
+      width: 100%;
+      max-height: 0;
+      margin-top: 0;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: max-height .30s cubic-bezier(.2,.72,.2,1), opacity .18s ease, margin-top .25s ease;
+    }
+    .release-dossier-slot.is-open {
+      max-height: 470px;
+      margin-top: 10px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .release-dossier {
+      position: relative;
+      width: min(300px, 100%);
+      margin-left: auto;
+      margin-right: auto;
+      padding: 9px;
+      box-sizing: border-box;
+      color: var(--text);
+      border: 1px solid rgba(255,145,61,.38);
+      background:
+        linear-gradient(180deg, rgba(18,7,2,.965), rgba(7,3,1,.975)),
+        radial-gradient(circle at 84% 8%, rgba(255,133,39,.105), transparent 36%);
+      box-shadow: inset 0 0 0 1px rgba(255,157,72,.035), 0 12px 34px rgba(0,0,0,.30);
+      backdrop-filter: blur(5px) saturate(1.04);
+      -webkit-backdrop-filter: blur(5px) saturate(1.04);
+      clip-path: polygon(9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%, 0 9px);
+      transform: translate3d(0,-5px,0);
+      transform-origin: center center;
+      opacity: 0;
+      visibility: hidden;
+      transition: transform .20s cubic-bezier(.2,.72,.2,1), opacity .16s ease, visibility .20s ease;
+    }
+    .release-dossier.is-open { transform: translate3d(0,0,0); opacity: 1; visibility: visible; }
+    .release-dossier.is-relocating { opacity: 0 !important; visibility: hidden !important; transition: none !important; }
+    .release-dossier::before,
+    .release-dossier::after { content: ""; position: absolute; pointer-events: none; }
+    .release-dossier::before {
+      inset: 5px;
+      border-top: 1px solid rgba(255,151,63,.10);
+      border-bottom: 1px solid rgba(255,151,63,.055);
+    }
+    .release-dossier::after {
+      top: 0;
+      right: 18px;
+      width: 34px;
+      height: 1px;
+      background: rgba(255,151,63,.72);
+      box-shadow: 0 0 8px rgba(255,151,63,.25);
+    }
+    .release-dossier__head {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 22px;
+      margin-bottom: 5px;
+    }
+    .release-dossier__kicker {
+      color: rgba(233,133,50,.75);
+      font: 600 .34rem/1 var(--ui);
+      letter-spacing: .22em;
+      text-transform: uppercase;
+    }
+    .release-dossier__close {
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      color: rgba(239,232,226,.67);
+      border: 1px solid rgba(222,108,31,.23);
+      background: rgba(255,126,31,.012);
+      cursor: pointer;
+      font: 400 .86rem/1 var(--ui);
+      transition: color .16s ease, border-color .16s ease, background .16s ease, transform .16s ease;
+    }
+    .release-dossier__close:hover,
+    .release-dossier__close:focus-visible {
+      color: #fff;
+      border-color: rgba(255,153,69,.65);
+      background: rgba(255,126,31,.055);
+      transform: rotate(90deg);
+      outline: none;
+    }
+    .release-dossier__cover-frame {
+      position: relative;
+      z-index: 1;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 6px;
+      overflow: hidden;
+      border: 1px solid rgba(255,145,61,.31);
+      clip-path: polygon(7px 0, 100% 0, 100% calc(100% - 7px), calc(100% - 7px) 100%, 0 100%, 0 7px);
+      box-shadow: 0 7px 18px rgba(0,0,0,.18);
+    }
+    .release-dossier__cover {
+      display: block;
+      width: 100%;
+      height: 100%;
+      max-width: 80px;
+      max-height: 80px;
+      margin: 0;
+      object-fit: cover;
+    }
+    .release-dossier__title {
+      position: relative;
+      z-index: 1;
+      padding: 0 10px;
+      color: rgba(248,242,237,.95);
+      font: 500 .96rem/1.08 var(--ui);
+      letter-spacing: .012em;
+      text-align: center;
+      text-transform: lowercase;
+    }
+    .release-dossier__meta {
+      position: relative;
+      z-index: 1;
+      margin-top: 4px;
+      color: rgba(181,165,155,.68);
+      font: 500 .34rem/1.2 var(--ui);
+      letter-spacing: .12em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .release-dossier__section-label {
+      position: relative;
+      z-index: 1;
+      margin: 8px 0 5px;
+      color: rgba(233,133,50,.74);
+      font: 600 .34rem/1 var(--ui);
+      letter-spacing: .20em;
+      text-transform: uppercase;
+    }
+    .release-dossier__links {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 5px;
+    }
+    .release-dossier__link {
+      min-width: 0;
+      min-height: 28px;
+      padding: 6px 7px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      color: rgba(239,232,226,.75);
+      text-decoration: none;
+      border: 1px solid rgba(222,108,31,.21);
+      background: rgba(255,126,31,.012);
+      font: 600 .39rem/1 var(--ui);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+      transition: color .16s ease, border-color .16s ease, background .16s ease, transform .16s ease;
+    }
+    .release-dossier__link b { color: rgba(255,151,63,.78); font-size: .62rem; font-weight: 400; }
+    .release-dossier__link:hover,
+    .release-dossier__link:focus-visible {
+      color: #fff;
+      border-color: rgba(255,153,69,.62);
+      background: rgba(255,126,31,.050);
+      transform: translateY(-1px);
+      outline: none;
+    }
+    .release-dossier__link.is-pending {
+      color: rgba(239,232,226,.48);
+      border-color: rgba(222,108,31,.14);
+      background: rgba(255,126,31,.007);
+      cursor: default;
+      opacity: .80;
+      transform: none;
+    }
+    .release-dossier__link.is-pending b { color: rgba(255,151,63,.45); }
+
+    .release-dossier__visualizer {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+    .release-dossier__visualizer .release-video-card {
+      width: 100%;
+      aspect-ratio: 16 / 7.2;
+      min-height: 0;
+      margin: 0;
+    }
+    .release-dossier__visualizer .release-video-card__inner { padding: 7px 8px; }
+    .release-dossier__visualizer .yt-top { min-height: 14px; gap: 5px; }
+    .release-dossier__visualizer .yt-avatar { width: 17px; height: 17px; font-size: .36rem; }
+    .release-dossier__visualizer .yt-title { max-width: 184px; font-size: .38rem; }
+    .release-dossier__visualizer .yt-actions { font-size: .46rem; }
+    .release-dossier__visualizer .release-video-card__play { width: 34px; height: 34px; }
+    .release-dossier__visualizer .visualizer-launch__label,
+    .release-dossier__visualizer .visualizer-pending-label { font-size: .34rem; letter-spacing: .13em; }
+    .release-dossier__visualizer .yt-bottom { display: none; }
+    .release-dossier__visualizer .visualizer-youtube-link {
+      right: 7px;
+      bottom: 6px;
+      padding: 3px 5px;
+      font-size: .30rem;
+    }
+
+    /* Scanner panel yields when the compact popup uses its HUD lane.
+       Keep the tactical cursor alive: scan targets hide the native cursor on desktop,
+       so suppressing both cursors here made the pointer vanish when a release opened. */
+    body.release-dossier-floating .scanner-panel,
+    body.release-dossier-floating .scanner-link {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+    body.release-dossier-floating .release-dossier-slot {
+      max-height: 0 !important;
+      margin-top: 0 !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .release-dossier.is-floating {
+      position: fixed;
+      top: var(--dossier-top, 90px);
+      left: var(--dossier-left, auto);
+      right: var(--dossier-right, auto);
+      width: 300px;
+      max-height: min(390px, calc(100vh - 36px));
+      overflow: auto;
+      overscroll-behavior: contain;
+      z-index: 74;
+      pointer-events: none;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,151,63,.30) rgba(0,0,0,.10);
+    }
+    .release-dossier.is-floating[data-float-side="left"]:not(.is-open) { transform: translate3d(7px,0,0); }
+    .release-dossier.is-floating[data-float-side="right"]:not(.is-open) { transform: translate3d(-7px,0,0); }
+    .release-dossier.is-floating[data-float-side="bottom"]:not(.is-open) { transform: translate3d(0,-7px,0); }
+    .release-dossier.is-floating.is-open { pointer-events: auto; }
+
+    @media (min-width: 961px) {
+      .section--release .release-overview {
+        grid-template-columns: 212px minmax(0,1fr);
+        gap: 37px;
+        height: 212px;
+      }
+      .section--release .release-cover { width: 212px; height: 212px; aspect-ratio: 1; }
+      .section--release .release-live-title { white-space: normal; line-height: 1.06; }
+      .section--discography .eyebrow { font-size: 8.8px; letter-spacing: .255em; }
+      .section--discography { margin-top: 20px; }
+      .section--discography .module-label { margin-bottom: 6px; }
+      .discography-entry { flex-basis: 108px; }
+      .discography-cover { width: 108px; }
+    }
+
+    @media (min-width: 721px) and (max-width: 960px) {
+      .section--discography { margin-top: 10px; }
+      .discography-module { padding: 8px 9px 6px; }
+      .discography-strip { gap: 10px; }
+      .discography-entry { flex-basis: 98px; }
+      .discography-cover { width: 98px; }
+      .discography-title { font-size: .59rem; }
+      .release-dossier-slot.is-open { max-height: 410px; }
+    }
+
+    @media (max-width: 720px) {
+      .section--discography { margin-top: 9px; }
+      .section--discography .eyebrow { margin-bottom: 7px; }
+      .discography-module { padding: 7px 8px 5px; margin-inline: 0; }
+      .discography-strip { gap: 9px; padding-bottom: 6px; }
+      .discography-entry { flex-basis: 88px; }
+      .discography-cover { width: 88px; }
+      .discography-cover::after { width: 17px; height: 17px; top: 5px; right: 5px; }
+      .discography-copy { padding-top: 5px; }
+      .discography-title { font-size: .56rem; }
+      .discography-meta { font-size: .31rem; letter-spacing: .09em; }
+      .release-dossier-slot.is-open { max-height: 405px; margin-top: 7px; }
+      .release-dossier { width: min(292px, 100%); padding: 8px; }
+      .release-dossier__cover-frame { width: 76px; height: 76px; }
+      .release-dossier__cover { max-width: 76px; max-height: 76px; }
+      .release-dossier__title { font-size: .93rem; }
+      .release-dossier__visualizer .yt-title { max-width: 164px; }
+    }
+
+    @media (max-width: 420px) {
+      .discography-entry { flex-basis: 82px; }
+      .discography-cover { width: 82px; }
+      .release-dossier { width: min(286px, 100%); }
+      .release-dossier__links { gap: 4px; }
+      .release-dossier__link { padding: 7px; font-size: .34rem; }
+      .release-dossier__visualizer .yt-title { max-width: 155px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .release-dossier-slot,
+      .release-dossier,
+      .discography-cover,
+      .discography-cover img,
+      .release-dossier__close,
+      .release-dossier__link { transition: none !important; }
+    }
+
+    .page.is-booting .section--release { animation: boot-module .56s cubic-bezier(.2,.72,.2,1) .42s both; }
+    .page.is-booting .section--discography { animation: boot-module .52s cubic-bezier(.2,.72,.2,1) .57s both; }
+    .page.is-booting .section--ep { animation: boot-module .50s cubic-bezier(.2,.72,.2,1) .70s both; }
+    .page.is-booting .section--links { animation: boot-module .50s cubic-bezier(.2,.72,.2,1) .82s both; }
+
+    .page.is-shutting-down .section--links { animation: hud-module-exit .24s ease .02s both; }
+    .page.is-shutting-down .section--ep { animation: hud-module-exit .25s ease .05s both; }
+    .page.is-shutting-down .section--discography { animation: hud-module-exit .27s ease .09s both; }
+    .page.is-shutting-down .section--release { animation: hud-module-exit .30s ease .15s both; }
+
+    /* v78 // readability + compact archive polish */
+    .section--release > .eyebrow,
+    .latest-visualizer > .module-label,
+    .section--discography > .eyebrow {
+      font-size: .55rem;
+      letter-spacing: .285em;
+    }
+    .button { font-size: .69rem; }
+    .release-streams .button { font-size: .61rem; }
+    .links-module .button { font-size: .61rem; }
+    .release-dossier__link { font-size: .39rem; }
+    .visualizer-launch__label { font-size: .52rem; }
+    .frame-toggle { font-size: 9.5px; }
+
+    @media (max-width: 720px) {
+      .section--release > .eyebrow,
+      .latest-visualizer > .module-label,
+      .section--discography > .eyebrow { font-size: .53rem; }
+      .button { font-size: .70rem; }
+      .release-streams .button { font-size: .62rem; }
+      .links-module .button { font-size: .60rem; }
+      .release-dossier__link { font-size: .40rem; }
+    }
+
+    /* v79 // release popup readability + complete discography hover frame */
+    .discography-strip {
+      padding: 5px 4px 8px;
+      gap: 12px;
+    }
+    .discography-entry {
+      position: relative;
+      z-index: 1;
+    }
+    .discography-entry:has(.discography-cover:hover),
+    .discography-entry:has(.discography-cover:focus-visible),
+    .discography-entry:has(.discography-cover[aria-expanded="true"]) { z-index: 5; }
+    .discography-cover {
+      isolation: isolate;
+      border: 0;
+      overflow: hidden;
+      box-shadow: none;
+    }
+    .discography-cover::before {
+      inset: 0;
+      z-index: 4;
+      opacity: 1 !important;
+      border: 0;
+      background:
+        linear-gradient(180deg, transparent 58%, rgba(5,2,1,.22));
+      box-shadow: inset 0 0 0 1px rgba(255,145,61,.34);
+      clip-path: inherit;
+      transition: box-shadow .20s ease, background .20s ease;
+    }
+    .discography-cover:hover,
+    .discography-cover:focus-visible,
+    .discography-cover[aria-expanded="true"] {
+      transform: translateY(-1px);
+      box-shadow: 0 7px 20px rgba(0,0,0,.24), 0 0 18px rgba(255,128,34,.07);
+    }
+    .discography-cover:hover::before,
+    .discography-cover:focus-visible::before,
+    .discography-cover[aria-expanded="true"]::before {
+      opacity: 1 !important;
+      background:
+        linear-gradient(180deg, rgba(255,151,63,.025), transparent 46%, rgba(5,2,1,.16));
+      box-shadow:
+        inset 0 0 0 1px rgba(255,165,86,.90),
+        inset 0 0 13px rgba(255,123,29,.08);
+    }
+    .discography-cover::after { z-index: 6; }
+
+    .release-dossier-slot.is-open { max-height: 560px; }
+    .release-dossier {
+      width: min(380px, 100%);
+      padding: 14px 14px 15px;
+      border-color: rgba(255,150,67,.52);
+      background:
+        linear-gradient(90deg, rgba(255,151,63,.020) 1px, transparent 1px) 0 0 / 23px 23px,
+        linear-gradient(180deg, rgba(255,151,63,.016) 1px, transparent 1px) 0 0 / 23px 23px,
+        radial-gradient(circle at 88% 5%, rgba(255,134,40,.13), transparent 34%),
+        linear-gradient(180deg, rgba(17,7,2,.985), rgba(7,3,1,.985));
+      box-shadow:
+        inset 0 0 0 1px rgba(255,157,72,.045),
+        inset 0 0 38px rgba(255,103,15,.025),
+        0 14px 38px rgba(0,0,0,.34),
+        0 0 20px rgba(255,119,25,.045);
+      clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+    }
+    .release-dossier::before {
+      inset: 6px;
+      border: 1px solid rgba(255,151,63,.105);
+      background:
+        linear-gradient(90deg, rgba(255,151,63,.12), transparent 38%) top left / 100% 1px no-repeat,
+        linear-gradient(180deg, rgba(255,151,63,.08), transparent 46%) top left / 1px 100% no-repeat;
+      clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    }
+    .release-dossier::after {
+      inset: 0;
+      width: auto;
+      height: auto;
+      background:
+        linear-gradient(90deg, rgba(255,167,87,.95) 0 58px, transparent 58px) 16px 0 / calc(100% - 32px) 1px no-repeat,
+        linear-gradient(180deg, rgba(255,151,63,.72) 0 36px, transparent 36px) 100% 18px / 1px calc(100% - 36px) no-repeat,
+        linear-gradient(90deg, rgba(255,151,63,.46) 0 34px, transparent 34px) calc(100% - 16px) 100% / calc(100% - 32px) 1px no-repeat,
+        linear-gradient(180deg, rgba(255,151,63,.42) 0 28px, transparent 28px) 0 calc(100% - 18px) / 1px calc(100% - 36px) no-repeat;
+      box-shadow: none;
+    }
+    .release-dossier__head {
+      min-height: 27px;
+      margin: -2px 0 9px;
+      padding: 0 0 7px;
+      border-bottom: 1px solid rgba(255,151,63,.11);
+    }
+    .release-dossier__head::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 64px;
+      height: 1px;
+      background: rgba(255,161,78,.74);
+      box-shadow: 0 0 7px rgba(255,151,63,.18);
+    }
+    .release-dossier__kicker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      color: rgba(240,143,61,.90);
+      font-size: .46rem;
+      letter-spacing: .21em;
+    }
+    .release-dossier__kicker i {
+      position: relative;
+      padding-left: 10px;
+      color: rgba(173,154,143,.50);
+      font: 500 .33rem/1 var(--ui);
+      letter-spacing: .17em;
+      font-style: normal;
+      white-space: nowrap;
+    }
+    .release-dossier__kicker i::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 4px;
+      height: 4px;
+      margin-top: -2px;
+      border: 1px solid rgba(255,151,63,.45);
+      transform: rotate(45deg);
+    }
+    .release-dossier__close {
+      width: 27px;
+      height: 27px;
+      font-size: .91rem;
+      border-color: rgba(255,146,59,.30);
+      clip-path: polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
+    }
+    .release-dossier__cover-frame {
+      width: 116px;
+      height: 116px;
+      margin: 2px auto 9px;
+      border-color: rgba(255,151,63,.42);
+      box-shadow: 0 8px 22px rgba(0,0,0,.22), 0 0 0 1px rgba(255,145,61,.035);
+      clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    }
+    .release-dossier__cover-frame::before,
+    .release-dossier__cover-frame::after {
+      content: "";
+      position: absolute;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .release-dossier__cover-frame::before {
+      left: 6px;
+      top: 6px;
+      width: 18px;
+      height: 18px;
+      border-left: 1px solid rgba(255,165,86,.72);
+      border-top: 1px solid rgba(255,165,86,.72);
+    }
+    .release-dossier__cover-frame::after {
+      right: 6px;
+      bottom: 6px;
+      width: 18px;
+      height: 18px;
+      border-right: 1px solid rgba(255,151,63,.46);
+      border-bottom: 1px solid rgba(255,151,63,.46);
+    }
+    .release-dossier__cover {
+      max-width: 116px;
+      max-height: 116px;
+    }
+    .release-dossier__title {
+      padding: 0 16px;
+      font-size: 1.08rem;
+      line-height: 1.10;
+      letter-spacing: .016em;
+    }
+    .release-dossier__meta {
+      margin-top: 5px;
+      font-size: .41rem;
+      letter-spacing: .135em;
+    }
+    .release-dossier__section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 11px 0 7px;
+      color: rgba(240,143,61,.88);
+      font-size: .46rem;
+      letter-spacing: .18em;
+    }
+    .release-dossier__section-label::after {
+      content: "";
+      flex: 1 1 auto;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255,151,63,.20), transparent);
+    }
+    .release-dossier__links {
+      gap: 6px;
+    }
+    .release-dossier__link {
+      min-height: 36px;
+      padding: 7px 9px;
+      border-color: rgba(222,108,31,.25);
+      background: rgba(255,126,31,.016);
+      font-size: .52rem;
+      letter-spacing: .06em;
+    }
+    .release-dossier__link b { font-size: .72rem; }
+    .release-dossier__visualizer .release-video-card {
+      aspect-ratio: 16 / 7.35;
+      border-color: rgba(255,145,61,.26);
+    }
+    .release-dossier__visualizer .release-video-card__inner { padding: 9px 10px; }
+    .release-dossier__visualizer .yt-top { min-height: 17px; gap: 6px; }
+    .release-dossier__visualizer .yt-avatar { width: 20px; height: 20px; font-size: .39rem; }
+    .release-dossier__visualizer .yt-title { max-width: 235px; font-size: .45rem; }
+    .release-dossier__visualizer .yt-actions { font-size: .50rem; }
+    .release-dossier__visualizer .release-video-card__play { width: 39px; height: 39px; }
+    .release-dossier__visualizer .visualizer-launch__label,
+    .release-dossier__visualizer .visualizer-pending-label { font-size: .42rem; letter-spacing: .14em; }
+    .release-dossier__visualizer .visualizer-youtube-link {
+      right: 8px;
+      bottom: 7px;
+      padding: 4px 6px;
+      font-size: .33rem;
+    }
+    .release-dossier.is-floating {
+      width: 380px;
+      max-height: min(510px, calc(100vh - 36px));
+    }
+
+    @media (min-width: 721px) and (max-width: 960px) {
+      .release-dossier-slot.is-open { max-height: 540px; }
+      .release-dossier { width: min(350px, 100%); }
+    }
+    @media (max-width: 720px) {
+      .discography-strip { padding: 4px 3px 7px; }
+      .release-dossier-slot.is-open { max-height: 540px; }
+      .release-dossier { width: min(342px, 100%); padding: 12px 12px 13px; }
+      .release-dossier__cover-frame { width: 98px; height: 98px; }
+      .release-dossier__cover { max-width: 98px; max-height: 98px; }
+      .release-dossier__title { font-size: 1rem; }
+      .release-dossier__link { min-height: 32px; font-size: .43rem; }
+      .release-dossier__visualizer .yt-title { max-width: 218px; }
+    }
+    @media (max-width: 420px) {
+      .release-dossier { width: min(328px, 100%); }
+      .release-dossier__links { gap: 5px; }
+      .release-dossier__link { padding: 7px 8px; font-size: .41rem; }
+      .release-dossier__visualizer .yt-title { max-width: 200px; }
+    }
+
+
+    /* v80 // adaptive FUI acquisition / disengage animation */
+    .release-dossier {
+      --dossier-enter-x: 0px;
+      --dossier-enter-y: -10px;
+      --dossier-scan-x: 0px;
+      --dossier-scan-y: -112%;
+      --dossier-scan-x-end: 0px;
+      --dossier-scan-y-end: 112%;
+      will-change: transform, opacity, filter;
+    }
+    .release-dossier.is-floating[data-float-side="left"] {
+      --dossier-enter-x: 14px;
+      --dossier-enter-y: 0px;
+      --dossier-scan-x: 112%;
+      --dossier-scan-y: 0px;
+      --dossier-scan-x-end: -112%;
+      --dossier-scan-y-end: 0px;
+    }
+    .release-dossier.is-floating[data-float-side="right"] {
+      --dossier-enter-x: -14px;
+      --dossier-enter-y: 0px;
+      --dossier-scan-x: -112%;
+      --dossier-scan-y: 0px;
+      --dossier-scan-x-end: 112%;
+      --dossier-scan-y-end: 0px;
+    }
+    .release-dossier.is-floating[data-float-side="bottom"] {
+      --dossier-enter-x: 0px;
+      --dossier-enter-y: -12px;
+      --dossier-scan-x: 0px;
+      --dossier-scan-y: -112%;
+      --dossier-scan-x-end: 0px;
+      --dossier-scan-y-end: 112%;
+    }
+
+    .release-dossier__signal-scan {
+      position: absolute;
+      inset: 7px;
+      z-index: 12;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      clip-path: polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px);
+    }
+    .release-dossier__signal-scan::before {
+      content: "";
+      position: absolute;
+      left: -8%;
+      top: -8%;
+      width: 116%;
+      height: 116%;
+      background:
+        linear-gradient(180deg,
+          transparent 0 43%,
+          rgba(255,166,91,.04) 46%,
+          rgba(255,168,90,.72) 49.6%,
+          rgba(255,119,31,.16) 50.5%,
+          transparent 55%),
+        linear-gradient(90deg,
+          transparent 0 44%,
+          rgba(255,155,75,.025) 47%,
+          rgba(255,151,63,.26) 49.8%,
+          transparent 53%);
+      filter: drop-shadow(0 0 5px rgba(255,126,31,.38));
+      transform: translate3d(var(--dossier-scan-x), var(--dossier-scan-y), 0);
+    }
+
+    .release-dossier.is-opening {
+      visibility: visible;
+      animation: dossier-fui-acquire .42s cubic-bezier(.18,.78,.16,1) both;
+    }
+    .release-dossier.is-opening::before {
+      animation: dossier-frame-acquire .38s cubic-bezier(.2,.76,.18,1) .025s both;
+    }
+    .release-dossier.is-opening::after {
+      animation: dossier-frame-accent-acquire .34s steps(5,end) .065s both;
+    }
+    .release-dossier.is-opening .release-dossier__signal-scan {
+      animation: dossier-scan-container-in .34s linear .055s both;
+    }
+    .release-dossier.is-opening .release-dossier__signal-scan::before {
+      animation: dossier-scan-pass .34s cubic-bezier(.18,.72,.2,1) .055s both;
+    }
+
+    .release-dossier.is-opening > .release-dossier__head,
+    .release-dossier.is-opening > .release-dossier__cover-frame,
+    .release-dossier.is-opening > .release-dossier__title,
+    .release-dossier.is-opening > .release-dossier__meta,
+    .release-dossier.is-opening > .release-dossier__section-label,
+    .release-dossier.is-opening > .release-dossier__links,
+    .release-dossier.is-opening > .release-dossier__visualizer {
+      animation: dossier-data-in .22s cubic-bezier(.18,.74,.18,1) both;
+    }
+    .release-dossier.is-opening > .release-dossier__head { animation-delay: .095s; }
+    .release-dossier.is-opening > .release-dossier__cover-frame { animation-delay: .125s; }
+    .release-dossier.is-opening > .release-dossier__title { animation-delay: .155s; }
+    .release-dossier.is-opening > .release-dossier__meta { animation-delay: .175s; }
+    .release-dossier.is-opening > .release-dossier__section-label { animation-delay: .195s; }
+    .release-dossier.is-opening > .release-dossier__links { animation-delay: .225s; }
+    .release-dossier.is-opening > .release-dossier__visualizer { animation-delay: .255s; }
+
+    .release-dossier.is-closing {
+      visibility: visible !important;
+      pointer-events: none !important;
+      animation: dossier-fui-disengage .30s cubic-bezier(.45,.02,.78,.32) both;
+    }
+    .release-dossier.is-closing::before {
+      animation: dossier-frame-disengage .26s cubic-bezier(.45,.02,.78,.32) both;
+    }
+    .release-dossier.is-closing::after {
+      animation: dossier-frame-accent-disengage .22s steps(4,end) both;
+    }
+    .release-dossier.is-closing .release-dossier__signal-scan {
+      animation: dossier-scan-container-out .19s linear both;
+    }
+    .release-dossier.is-closing .release-dossier__signal-scan::before {
+      animation: dossier-scan-exit .19s cubic-bezier(.42,0,.78,.4) both;
+    }
+    .release-dossier.is-closing > .release-dossier__head,
+    .release-dossier.is-closing > .release-dossier__cover-frame,
+    .release-dossier.is-closing > .release-dossier__title,
+    .release-dossier.is-closing > .release-dossier__meta,
+    .release-dossier.is-closing > .release-dossier__section-label,
+    .release-dossier.is-closing > .release-dossier__links,
+    .release-dossier.is-closing > .release-dossier__visualizer {
+      animation: dossier-data-out .13s ease both;
+    }
+
+    @keyframes dossier-fui-acquire {
+      0% {
+        opacity: 0;
+        transform: translate3d(var(--dossier-enter-x),var(--dossier-enter-y),0) scale(.987,.965);
+        filter: brightness(1.75) contrast(1.08) saturate(.82);
+      }
+      9% { opacity: .32; }
+      14% { opacity: .07; transform: translate3d(var(--dossier-enter-x),var(--dossier-enter-y),0) scale(.991,.973); }
+      22% { opacity: .68; }
+      29% { opacity: .34; }
+      39% {
+        opacity: .88;
+        transform: translate3d(0,0,0) scale(.997,.992);
+        filter: brightness(1.22) contrast(1.035) saturate(.95);
+      }
+      58% { opacity: .96; }
+      100% {
+        opacity: 1;
+        transform: translate3d(0,0,0) scale(1);
+        filter: brightness(1) contrast(1) saturate(1);
+      }
+    }
+    @keyframes dossier-frame-acquire {
+      0% { opacity: 0; clip-path: inset(0 100% 97% 0); }
+      30% { opacity: .92; clip-path: inset(0 12% 94% 0); }
+      54% { opacity: .75; clip-path: inset(0 0 38% 0); }
+      100% { opacity: 1; clip-path: inset(0); }
+    }
+    @keyframes dossier-frame-accent-acquire {
+      0%,12% { opacity: 0; }
+      24% { opacity: .95; }
+      36% { opacity: .15; }
+      52% { opacity: .86; }
+      66% { opacity: .42; }
+      100% { opacity: 1; }
+    }
+    @keyframes dossier-scan-container-in {
+      0%,8% { opacity: 0; }
+      18% { opacity: .92; }
+      78% { opacity: .50; }
+      100% { opacity: 0; }
+    }
+    @keyframes dossier-scan-pass {
+      0% { transform: translate3d(var(--dossier-scan-x),var(--dossier-scan-y),0); }
+      100% { transform: translate3d(var(--dossier-scan-x-end),var(--dossier-scan-y-end),0); }
+    }
+    @keyframes dossier-data-in {
+      0% { opacity: 0; transform: translate3d(0,5px,0); filter: blur(1.2px) brightness(1.25); }
+      38% { opacity: .54; }
+      100% { opacity: 1; transform: translate3d(0,0,0); filter: none; }
+    }
+    @keyframes dossier-fui-disengage {
+      0% { opacity: 1; transform: translate3d(0,0,0) scale(1); filter: brightness(1); }
+      18% { opacity: .94; filter: brightness(1.18) contrast(1.03); }
+      28% { opacity: .52; }
+      35% { opacity: .86; }
+      56% { opacity: .34; transform: translate3d(0,0,0) scale(.995,.985); }
+      100% {
+        opacity: 0;
+        transform: translate3d(var(--dossier-enter-x),var(--dossier-enter-y),0) scale(.982,.958);
+        filter: brightness(1.45) contrast(1.07) saturate(.78);
+      }
+    }
+    @keyframes dossier-frame-disengage {
+      0% { opacity: 1; clip-path: inset(0); }
+      62% { opacity: .55; clip-path: inset(0 0 72% 0); }
+      100% { opacity: 0; clip-path: inset(0 100% 98% 0); }
+    }
+    @keyframes dossier-frame-accent-disengage {
+      0% { opacity: 1; }
+      28% { opacity: .25; }
+      48% { opacity: .85; }
+      72% { opacity: .12; }
+      100% { opacity: 0; }
+    }
+    @keyframes dossier-scan-container-out {
+      0% { opacity: 0; }
+      18% { opacity: .70; }
+      100% { opacity: 0; }
+    }
+    @keyframes dossier-scan-exit {
+      0% { transform: translate3d(0,0,0); }
+      100% { transform: translate3d(var(--dossier-scan-x),var(--dossier-scan-y),0); }
+    }
+    @keyframes dossier-data-out {
+      0% { opacity: 1; transform: translate3d(0,0,0); filter: none; }
+      100% { opacity: 0; transform: translate3d(0,-3px,0); filter: blur(.8px) brightness(1.15); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .release-dossier.is-opening,
+      .release-dossier.is-closing,
+      .release-dossier.is-opening::before,
+      .release-dossier.is-opening::after,
+      .release-dossier.is-closing::before,
+      .release-dossier.is-closing::after,
+      .release-dossier.is-opening > *,
+      .release-dossier.is-closing > *,
+      .release-dossier__signal-scan,
+      .release-dossier__signal-scan::before {
+        animation: none !important;
+      }
+      .release-dossier.is-opening { opacity: 1 !important; transform: translate3d(0,0,0) !important; visibility: visible !important; filter: none !important; }
+      .release-dossier.is-closing { opacity: 0 !important; visibility: hidden !important; }
+    }
+
+  
+    /* v82: soundscape uses three wider platform buttons in one clean vertical stack. */
+    /* v83: opening a floating release dossier no longer suppresses the tactical cursor. */
+    @media (min-width: 961px) {
+      .release-streams--three {
+        grid-template-columns: 1fr;
+        width: 100%;
+      }
+      .release-streams--three .button:last-child { grid-column: auto; }
+    }
+    .release-dossier__links.is-three .release-dossier__link:last-child { grid-column: 1 / -1; }
+</style>
 </head>
 <body class="hud-booting">
   <div class="bg-scene" aria-hidden="true"></div>
@@ -3176,47 +4209,92 @@
         <div class="release-module">
           <div class="release-overview">
             <div class="release-art-column">
-              <div class="release-cover scan-target" tabindex="0" data-scan-title="THE LAST ORCHID" data-scan-lines="TYPE: SINGLE|STATUS: OUT NOW|RELEASE: 04.08.2026|ART: OFFICIAL COVER">
-                <img src="./assets/the-last-orchid-cover.webp" width="2048" height="2048" decoding="async" alt="the last orchid cover art">
+              <div class="release-cover scan-target" tabindex="0" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|PROFILE: CINEMATIC / AMBIENT|STATUS: OUT NOW">
+                <img src="./assets/soundscape-to-ardor-cover.webp" width="2048" height="2048" decoding="async" alt="soundscape to ardor cover art">
               </div>
               <div class="release-cover-label">cover art // official</div>
             </div>
 
             <div class="release-info">
-              <div class="release-live-title scan-heading scan-target" tabindex="0" data-scan-title="THE LAST ORCHID" data-scan-lines="TYPE: SINGLE|STATUS: OUT NOW|RELEASE: 04.08.2026|SIGNAL: LIVE">the last orchid</div>
+              <div class="release-live-title scan-heading scan-target" tabindex="0" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|ARRANGEMENT: AKYIRO|SIGNAL: MELANCHOLIC / CINEMATIC|RELEASE: OUT NOW">soundscape to ardor</div>
               <div class="release-live-status">out now</div>
-              <div class="listen">listen now_</div>
+              <div class="listen">release links_</div>
 
-              <div class="release-streams">
-                <a class="button scan-target" data-scan-title="SPOTIFY" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN STREAM|LINK: EXTERNAL" href="https://open.spotify.com/track/7A5TPKtN7JJmlLvbzolFsm?si=3a0e08943a044c5a" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false"><path d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"></path></svg><span>Spotify</span><b>›</b></a>
-                <a class="button scan-target" data-scan-title="APPLE MUSIC" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN STREAM|LINK: EXTERNAL" href="https://music.apple.com/us/album/the-last-orchid-single/6795237989" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path></svg><span>Apple Music</span><b>›</b></a>
-                <a class="button scan-target" data-scan-title="YOUTUBE MUSIC" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN STREAM|LINK: EXTERNAL" href="https://youtu.be/IYysy0r-EEg?si=VHtbHBA3yI9jDmRn" target="_blank" rel="noopener noreferrer" aria-label="Open the last orchid on YouTube Music"><svg class="icon" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path d="M80 64H496C540.2 64 576 99.8 576 144V368C576 412.2 540.2 448 496 448H80C35.8 448 0 412.2 0 368V144C0 99.8 35.8 64 80 64Z"></path><path d="M232 176V336L376 256Z" fill="#050201"></path></svg><span>YT Music</span><b>›</b></a>
-                <a class="button scan-target" data-scan-title="BANDCAMP" data-scan-lines="TARGET: THE LAST ORCHID|ACTION: OPEN RELEASE PAGE|LINK: EXTERNAL|STORE: DIRECT SUPPORT" href="https://akyiro.bandcamp.com/track/the-last-orchid" target="_blank" rel="noopener noreferrer" aria-label="Open the last orchid on Bandcamp"><svg class="icon icon--bandcamp" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7.2 4.5H22L16.8 19.5H2Z"></path></svg><span>Bandcamp</span><b>›</b></a>
+              <div class="release-streams release-streams--three" aria-label="Listen to soundscape to ardor">
+                <a class="button scan-target" data-scan-title="SPOTIFY" data-scan-lines="TARGET: SOUNDSCAPE TO ARDOR|STATUS: CONNECTED|PLATFORM: SPOTIFY|ACTION: OPEN RELEASE" href="https://open.spotify.com/album/6WjJawaTj8XkpDi6aPVRw5" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false"><path d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"></path></svg><span>Spotify</span><b>↗</b></a>
+                <a class="button scan-target" data-scan-title="APPLE MUSIC" data-scan-lines="TARGET: SOUNDSCAPE TO ARDOR|STATUS: CONNECTED|PLATFORM: APPLE MUSIC|ACTION: OPEN RELEASE" href="https://music.apple.com/us/album/soundscape-to-ardor-single/6804140774" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path></svg><span>Apple Music</span><b>↗</b></a>
+                <a class="button scan-target" data-scan-title="YOUTUBE MUSIC" data-scan-lines="TARGET: SOUNDSCAPE TO ARDOR|STATUS: CONNECTED|PLATFORM: YOUTUBE MUSIC|ACTION: OPEN RELEASE" href="https://youtu.be/9cA_GUXm5P0?si=4NDREjI5ZMm2bMI9" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path d="M80 64H496C540.2 64 576 99.8 576 144V368C576 412.2 540.2 448 496 448H80C35.8 448 0 412.2 0 368V144C0 99.8 35.8 64 80 64Z"></path><path d="M232 176V336L376 256Z" fill="#050201"></path></svg><span>YT Music</span><b>↗</b></a>
               </div>
             </div>
           </div>
 
-          <div class="release-video">
+          <div class="release-video latest-visualizer">
             <div class="module-label">// visualizer</div>
-            <div class="release-video-card scan-target" id="visualizerCard" data-video-id="Y9iE4OPWao0" data-scan-title="OFFICIAL VISUALIZER" data-scan-lines="SOURCE: YOUTUBE|STATUS: OUT NOW|FEED: VISUALIZER MODULE|SIGNAL: LIVE">
-              <div class="release-video-card__inner" id="visualizerFacade">
+            <div class="release-video-card scan-target" data-video-id="eoAEQSasKfk" data-visualizer-title="akyiro - soundscape to ardor (visualizer)" data-scan-title="SOUNDSCAPE TO ARDOR // VISUALIZER" data-scan-lines="SOURCE: YOUTUBE|STATUS: READY|RELEASE: SOUNDSCAPE TO ARDOR|ACTION: INITIALIZE VISUALIZER">
+              <div class="release-video-card__inner">
                 <div class="yt-top">
                   <span class="yt-avatar">A</span>
-                  <span class="yt-title">akyiro - the last orchid (official visualizer)</span>
+                  <span class="yt-title">akyiro - soundscape to ardor (visualizer)</span>
                   <span class="yt-actions">↗</span>
                 </div>
-                <button class="release-video-card__center visualizer-launch" id="visualizerLaunch" type="button" aria-label="Play akyiro - the last orchid official visualizer">
+                <button class="release-video-card__center visualizer-launch" type="button" data-visualizer-launch aria-label="Play akyiro - soundscape to ardor visualizer">
                   <span class="release-video-card__play" aria-hidden="true"></span>
                   <span class="visualizer-launch__label">play visualizer</span>
                 </button>
-                <div class="yt-bottom visualizer-status" id="visualizerStatus">
+                <div class="yt-bottom visualizer-status">
                   <span>youtube embed // ready</span>
                   <span>click to initialize</span>
                 </div>
               </div>
-              <a class="visualizer-youtube-link" href="https://www.youtube.com/watch?v=Y9iE4OPWao0" target="_blank" rel="noopener noreferrer" aria-label="Watch the visualizer directly on YouTube">YouTube ↗</a>
+              <a class="visualizer-youtube-link" href="https://www.youtube.com/watch?v=eoAEQSasKfk" target="_blank" rel="noopener noreferrer" aria-label="Watch soundscape to ardor visualizer directly on YouTube">YouTube ↗</a>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="section section--discography">
+        <div class="eyebrow">// discography</div>
+        <div class="discography-module compact-module">
+          <div class="discography-strip" aria-label="Discography releases">
+            <article class="discography-entry" data-release-id="soundscape-to-ardor">
+              <button class="discography-cover scan-target" type="button" data-release-dossier="soundscape-to-ardor" aria-expanded="false" aria-controls="releaseDossier" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|STATUS: OUT NOW|ACTION: OPEN RELEASE FILE">
+                <img src="./assets/soundscape-to-ardor-cover-thumb.webp" width="320" height="320" decoding="async" loading="lazy" alt="soundscape to ardor cover art">
+              </button>
+              <div class="discography-copy">
+                <div class="discography-title">soundscape to ardor</div>
+                <div class="discography-meta">OUT NOW</div>
+              </div>
+            </article>
+
+            <article class="discography-entry" data-release-id="the-last-orchid">
+              <button class="discography-cover scan-target" type="button" data-release-dossier="the-last-orchid" aria-expanded="false" aria-controls="releaseDossier" data-scan-title="THE LAST ORCHID" data-scan-lines="TYPE: ORIGINAL SINGLE|STATUS: AVAILABLE NOW|RELEASE: 04.08.2026|ACTION: OPEN RELEASE FILE">
+                <img src="./assets/the-last-orchid-cover-thumb.webp" width="320" height="320" decoding="async" loading="lazy" alt="the last orchid cover art">
+              </button>
+              <div class="discography-copy">
+                <div class="discography-title">the last orchid</div>
+                <div class="discography-meta">04.08.2026</div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="release-dossier-slot" id="releaseDossierSlot">
+          <aside class="release-dossier" id="releaseDossier" role="dialog" aria-modal="false" aria-hidden="true" aria-labelledby="releaseDossierTitle" tabindex="-1" inert>
+            <div class="release-dossier__signal-scan" aria-hidden="true"></div>
+            <div class="release-dossier__head">
+              <div class="release-dossier__kicker"><span>// release file</span><i aria-hidden="true">archive node</i></div>
+              <button class="release-dossier__close" id="releaseDossierClose" type="button" aria-label="Close release popup">×</button>
+            </div>
+            <div class="release-dossier__cover-frame">
+              <img class="release-dossier__cover" id="releaseDossierCover" src="./assets/the-last-orchid-cover-thumb.webp" width="320" height="320" decoding="async" loading="eager" alt="">
+            </div>
+            <div class="release-dossier__title" id="releaseDossierTitle">the last orchid</div>
+            <div class="release-dossier__meta" id="releaseDossierMeta">04.08.2026 // single</div>
+            <div class="release-dossier__section-label">// listen on</div>
+            <div class="release-dossier__links" id="releaseDossierLinks"></div>
+            <div class="release-dossier__section-label">// additional content</div>
+            <div class="release-dossier__visualizer" id="releaseDossierVisualizer"></div>
+          </aside>
         </div>
       </section>
 
@@ -3243,19 +4321,9 @@
     </div>
   </main>
   <script>
-    const visualizerCard = document.getElementById('visualizerCard');
-    const visualizerFacade = document.getElementById('visualizerFacade');
-    const visualizerLaunch = document.getElementById('visualizerLaunch');
-    const visualizerStatus = document.getElementById('visualizerStatus');
-    const visualizerVideoId = visualizerCard?.dataset.videoId;
-
-    const setVisualizerStatus = (primary, secondary) => {
-      if (!visualizerStatus) return;
-      visualizerStatus.innerHTML = `<span>${primary}</span><span>${secondary}</span>`;
-    };
-
-    const buildVisualizerUrl = () => {
-      if (!visualizerVideoId) return '';
+    /* Generic YouTube visualizer loader. Works for the latest release and archive dossiers. */
+    const buildVisualizerUrl = (videoId) => {
+      if (!videoId) return '';
       const params = new URLSearchParams({
         autoplay: '1',
         playsinline: '1',
@@ -3264,33 +4332,356 @@
         origin: window.location.origin,
         widget_referrer: window.location.href.split('#')[0]
       });
-      return `https://www.youtube-nocookie.com/embed/${visualizerVideoId}?${params.toString()}`;
+      return `https://www.youtube-nocookie.com/embed/${videoId}?${params.toString()}`;
     };
 
-    const loadVisualizer = () => {
-      if (!visualizerCard || !visualizerVideoId || visualizerCard.classList.contains('has-player')) return;
+    const setVisualizerStatus = (card, primary, secondary) => {
+      const status = card?.querySelector('.visualizer-status');
+      if (!status) return;
+      status.innerHTML = `<span>${primary}</span><span>${secondary}</span>`;
+    };
+
+    const loadVisualizer = (card) => {
+      const videoId = card?.dataset.videoId;
+      if (!card || !videoId || card.classList.contains('has-player')) return;
 
       // file:// cannot provide the HTTP origin/referrer YouTube requires.
       if (!/^https?:$/.test(window.location.protocol)) {
-        visualizerCard.classList.add('embed-unavailable');
-        setVisualizerStatus('local file mode', 'run OPEN_LOCAL_PREVIEW.bat');
+        card.classList.add('embed-unavailable');
+        setVisualizerStatus(card, 'local file mode', 'run OPEN_LOCAL_PREVIEW.bat');
         return;
       }
 
       const iframe = document.createElement('iframe');
       iframe.className = 'release-video-embed';
-      iframe.src = buildVisualizerUrl();
-      iframe.title = 'akyiro - the last orchid official visualizer';
+      iframe.src = buildVisualizerUrl(videoId);
+      iframe.title = card.dataset.visualizerTitle || 'akyiro visualizer';
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
       iframe.referrerPolicy = 'strict-origin-when-cross-origin';
       iframe.allowFullscreen = true;
 
-      if (visualizerFacade) visualizerFacade.replaceWith(iframe);
-      else visualizerCard.prepend(iframe);
-      visualizerCard.classList.add('has-player');
+      const facade = card.querySelector('.release-video-card__inner');
+      if (facade) facade.replaceWith(iframe);
+      else card.prepend(iframe);
+      card.classList.add('has-player');
     };
 
-    visualizerLaunch?.addEventListener('click', loadVisualizer);
+    document.addEventListener('click', (event) => {
+      const launch = event.target.closest('[data-visualizer-launch]');
+      if (!launch || launch.disabled) return;
+      loadVisualizer(launch.closest('.release-video-card'));
+    });
+
+    const releaseArchive = {
+      'soundscape-to-ardor': {
+        title: 'soundscape to ardor',
+        meta: 'out now // cover single',
+        cover: './assets/soundscape-to-ardor-cover-thumb.webp',
+        visualizer: {
+          videoId: 'eoAEQSasKfk',
+          title: 'akyiro - soundscape to ardor (visualizer)',
+          directUrl: 'https://www.youtube.com/watch?v=eoAEQSasKfk'
+        },
+        links: [
+          { label: 'Spotify', url: 'https://open.spotify.com/album/6WjJawaTj8XkpDi6aPVRw5' },
+          { label: 'Apple Music', url: 'https://music.apple.com/us/album/soundscape-to-ardor-single/6804140774' },
+          { label: 'YT Music', url: 'https://youtu.be/9cA_GUXm5P0?si=4NDREjI5ZMm2bMI9' }
+        ]
+      },
+      'the-last-orchid': {
+        title: 'the last orchid',
+        meta: '04.08.2026 // single',
+        cover: './assets/the-last-orchid-cover-thumb.webp',
+        visualizer: {
+          videoId: 'Y9iE4OPWao0',
+          title: 'akyiro - the last orchid (official visualizer)',
+          directUrl: 'https://www.youtube.com/watch?v=Y9iE4OPWao0'
+        },
+        links: [
+          { label: 'Spotify', url: 'https://open.spotify.com/track/7A5TPKtN7JJmlLvbzolFsm?si=3a0e08943a044c5a' },
+          { label: 'Apple Music', url: 'https://music.apple.com/us/album/the-last-orchid-single/6795237989' },
+          { label: 'YT Music', url: 'https://youtu.be/IYysy0r-EEg?si=VHtbHBA3yI9jDmRn' },
+          { label: 'Bandcamp', url: 'https://akyiro.bandcamp.com/track/the-last-orchid' }
+        ]
+      }
+    };
+
+    const dossierSlot = document.getElementById('releaseDossierSlot');
+    const dossier = document.getElementById('releaseDossier');
+    const dossierClose = document.getElementById('releaseDossierClose');
+    const dossierCover = document.getElementById('releaseDossierCover');
+    const dossierTitle = document.getElementById('releaseDossierTitle');
+    const dossierMeta = document.getElementById('releaseDossierMeta');
+    const dossierVisualizer = document.getElementById('releaseDossierVisualizer');
+    const dossierLinks = document.getElementById('releaseDossierLinks');
+    const dossierTriggers = document.querySelectorAll('[data-release-dossier]');
+    const DOSSIER_OPEN_ANIMATION_MS = 460;
+    const DOSSIER_CLOSE_ANIMATION_MS = 320;
+    let dossierAnimationTimer = 0;
+    let dossierCloseTimer = 0;
+    const floatingDossierMedia = window.matchMedia('(min-width: 961px) and (hover: hover) and (pointer: fine)');
+    let activeReleaseId = null;
+    let activeDossierTrigger = null;
+
+    const renderDossierVisualizer = (release) => {
+      if (!dossierVisualizer) return;
+      const video = release.visualizer;
+      if (!video?.videoId) {
+        dossierVisualizer.innerHTML = `
+          <div class="release-video-card visualizer-card--pending">
+            <div class="release-video-card__inner">
+              <div class="release-video-card__center visualizer-pending-center">
+                <span class="release-video-card__play" aria-hidden="true"></span>
+                <span class="visualizer-pending-label">visualizer pending</span>
+              </div>
+            </div>
+          </div>`;
+        return;
+      }
+
+      dossierVisualizer.innerHTML = `
+        <div class="release-video-card" data-video-id="${video.videoId}" data-visualizer-title="${video.title}">
+          <div class="release-video-card__inner">
+            <div class="yt-top">
+              <span class="yt-avatar">A</span>
+              <span class="yt-title">${video.title}</span>
+              <span class="yt-actions">↗</span>
+            </div>
+            <button class="release-video-card__center visualizer-launch" type="button" data-visualizer-launch aria-label="Play ${video.title}">
+              <span class="release-video-card__play" aria-hidden="true"></span>
+              <span class="visualizer-launch__label">play visualizer</span>
+            </button>
+            <div class="yt-bottom visualizer-status"><span>youtube embed // ready</span><span>click to initialize</span></div>
+          </div>
+          <a class="visualizer-youtube-link" href="${video.directUrl}" target="_blank" rel="noopener noreferrer" aria-label="Watch ${video.title} directly on YouTube">YouTube ↗</a>
+        </div>`;
+    };
+
+    const renderReleaseDossier = (release) => {
+      if (!release || !dossier) return;
+      dossierTitle.textContent = release.title;
+      dossierMeta.textContent = release.meta;
+      dossierCover.src = release.cover;
+      dossierCover.alt = `${release.title} cover art`;
+      renderDossierVisualizer(release);
+
+      dossierLinks.replaceChildren();
+      dossierLinks.classList.toggle('is-three', release.links.length === 3);
+      release.links.forEach(({ label, url }) => {
+        const item = document.createElement(url ? 'a' : 'span');
+        item.className = `release-dossier__link${url ? '' : ' is-pending'}`;
+        if (url) {
+          item.href = url;
+          item.target = '_blank';
+          item.rel = 'noopener noreferrer';
+        } else {
+          item.setAttribute('aria-disabled', 'true');
+        }
+        const text = document.createElement('span');
+        text.textContent = label;
+        const marker = document.createElement('b');
+        marker.textContent = url ? '↗' : '…';
+        item.append(text, marker);
+        dossierLinks.append(item);
+      });
+    };
+
+    const DOSSIER_MARGIN = 18;
+    const DOSSIER_GAP = 14;
+
+    const clampDossierValue = (value, min, max) => Math.min(Math.max(value, min), Math.max(min, max));
+
+    const getDossierFloatLayout = () => {
+      if (!floatingDossierMedia.matches || !dossier || !activeDossierTrigger) return null;
+      const page = document.getElementById('mainInterface');
+      if (!page) return null;
+
+      const pageRect = page.getBoundingClientRect();
+      const triggerRect = activeDossierTrigger.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const panelWidth = 380;
+      const measuredHeight = Math.max(1, dossier.scrollHeight || 440);
+      const panelHeight = Math.min(measuredHeight, 510, viewportHeight - DOSSIER_MARGIN * 2);
+      const targetCenterX = triggerRect.left + triggerRect.width / 2;
+      const frameCenterX = pageRect.left + pageRect.width / 2;
+
+      const roomRight = viewportWidth - pageRect.right - DOSSIER_MARGIN;
+      const roomLeft = pageRect.left - DOSSIER_MARGIN;
+      const roomBottom = viewportHeight - pageRect.bottom - DOSSIER_MARGIN;
+      const sideFits = (side) => side === 'right'
+        ? roomRight >= panelWidth + DOSSIER_GAP
+        : roomLeft >= panelWidth + DOSSIER_GAP;
+
+      let side = targetCenterX < frameCenterX ? 'left' : 'right';
+      if (!sideFits(side)) {
+        const mirror = side === 'right' ? 'left' : 'right';
+        if (sideFits(mirror)) side = mirror;
+        else if (roomBottom >= panelHeight + DOSSIER_GAP) side = 'bottom';
+        else return null;
+      }
+
+      let x;
+      let y;
+      if (side === 'bottom') {
+        x = clampDossierValue(
+          targetCenterX - panelWidth / 2,
+          DOSSIER_MARGIN,
+          viewportWidth - DOSSIER_MARGIN - panelWidth
+        );
+        y = pageRect.bottom + DOSSIER_GAP;
+      } else {
+        x = side === 'right'
+          ? pageRect.right + DOSSIER_GAP
+          : pageRect.left - panelWidth - DOSSIER_GAP;
+        y = clampDossierValue(
+          triggerRect.top + (triggerRect.height - panelHeight) / 2,
+          DOSSIER_MARGIN,
+          viewportHeight - DOSSIER_MARGIN - panelHeight
+        );
+      }
+
+      return {
+        side,
+        x: clampDossierValue(x, DOSSIER_MARGIN, viewportWidth - DOSSIER_MARGIN - panelWidth),
+        y: clampDossierValue(y, DOSSIER_MARGIN, viewportHeight - DOSSIER_MARGIN - panelHeight),
+        panelWidth,
+        panelHeight
+      };
+    };
+
+    const applyDossierLayout = () => {
+      if (!dossier || !dossierSlot) return;
+      const floatLayout = getDossierFloatLayout();
+      const shouldFloat = Boolean(floatLayout);
+      const targetParent = shouldFloat ? document.body : dossierSlot;
+      const needsRelocation = dossier.parentElement !== targetParent;
+
+      if (needsRelocation) dossier.classList.add('is-relocating');
+      if (needsRelocation) targetParent.appendChild(dossier);
+
+      dossier.classList.toggle('is-floating', shouldFloat);
+      if (shouldFloat) {
+        dossier.dataset.floatSide = floatLayout.side;
+        dossier.style.setProperty('--dossier-top', `${Math.round(floatLayout.y)}px`);
+        dossier.style.setProperty('--dossier-left', `${Math.round(floatLayout.x)}px`);
+        dossier.style.setProperty('--dossier-right', 'auto');
+      } else {
+        delete dossier.dataset.floatSide;
+        dossier.style.removeProperty('--dossier-top');
+        dossier.style.removeProperty('--dossier-left');
+        dossier.style.removeProperty('--dossier-right');
+      }
+
+      document.body.classList.toggle(
+        'release-dossier-floating',
+        shouldFloat && dossierSlot.classList.contains('is-open')
+      );
+
+      if (needsRelocation) {
+        requestAnimationFrame(() => requestAnimationFrame(() => dossier.classList.remove('is-relocating')));
+      }
+    };
+
+    const positionReleaseDossier = () => {
+      if (!dossier || !dossierSlot?.classList.contains('is-open')) return;
+      applyDossierLayout();
+    };
+
+    const clearScannerForDossier = () => {
+      const panel = document.getElementById('scannerPanel');
+      const link = document.getElementById('scannerLink');
+      const cursor = document.getElementById('tacticalCursor');
+      panel?.classList.remove('is-active', 'is-loading', 'is-closing', 'is-switching');
+      panel?.setAttribute('aria-hidden', 'true');
+      link?.classList.remove('is-active', 'is-closing');
+      // Do not hide the tactical cursor here. The release trigger is still a .scan-target
+      // with cursor:none until the pointer leaves it; keeping the custom cursor visible
+      // prevents the pointer from disappearing during the popup acquisition animation.
+      cursor?.classList.remove('is-active');
+      document.querySelectorAll('.scan-locked').forEach((target) => target.classList.remove('scan-locked'));
+    };
+
+    const openReleaseDossier = (releaseId, trigger) => {
+      const release = releaseArchive[releaseId];
+      if (!release || !dossier || !dossierSlot) return;
+      if (activeReleaseId === releaseId && dossierSlot.classList.contains('is-open') && !dossier.classList.contains('is-closing')) {
+        closeReleaseDossier(false);
+        return;
+      }
+
+      window.clearTimeout(dossierAnimationTimer);
+      window.clearTimeout(dossierCloseTimer);
+      dossier.classList.remove('is-open', 'is-opening', 'is-closing');
+
+      activeReleaseId = releaseId;
+      activeDossierTrigger = trigger;
+      renderReleaseDossier(release);
+      dossierSlot.classList.add('is-open');
+      dossierTriggers.forEach((item) => item.setAttribute('aria-expanded', String(item.dataset.releaseDossier === releaseId)));
+      dossier.setAttribute('aria-hidden', 'false');
+      dossier.inert = false;
+
+      // Position/reparent while hidden, then let the FUI acquisition animation build the panel in-place.
+      applyDossierLayout();
+      clearScannerForDossier();
+      requestAnimationFrame(() => {
+        positionReleaseDossier();
+        requestAnimationFrame(() => {
+          dossier.classList.add('is-open', 'is-opening');
+          dossierAnimationTimer = window.setTimeout(() => dossier.classList.remove('is-opening'), DOSSIER_OPEN_ANIMATION_MS);
+        });
+        if (window.innerWidth <= 720) syncMobileBackgroundHeight();
+      });
+    };
+
+    function closeReleaseDossier(returnFocus = false) {
+      if (!dossier || !dossierSlot || !dossierSlot.classList.contains('is-open') || dossier.classList.contains('is-closing')) return;
+      const focusTarget = activeDossierTrigger;
+
+      window.clearTimeout(dossierAnimationTimer);
+      window.clearTimeout(dossierCloseTimer);
+      dossier.classList.remove('is-opening');
+      dossier.classList.add('is-closing');
+      dossier.setAttribute('aria-hidden', 'true');
+      dossier.inert = true;
+      dossierTriggers.forEach((item) => item.setAttribute('aria-expanded', 'false'));
+
+      // Keep the panel in its exact adaptive HUD position until the disengage animation is fully finished.
+      dossierCloseTimer = window.setTimeout(() => {
+        dossier.classList.remove('is-open', 'is-closing');
+        dossierSlot.classList.remove('is-open');
+        document.body.classList.remove('release-dossier-floating');
+        activeReleaseId = null;
+        activeDossierTrigger = null;
+
+        if (returnFocus && focusTarget) focusTarget.focus({ preventScroll: true });
+        if (window.innerWidth <= 720) syncMobileBackgroundHeight();
+      }, DOSSIER_CLOSE_ANIMATION_MS);
+    }
+
+    dossierTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', (event) => {
+        event.stopPropagation();
+        openReleaseDossier(trigger.dataset.releaseDossier, trigger);
+      });
+    });
+    dossierClose?.addEventListener('click', () => closeReleaseDossier(true));
+
+    document.addEventListener('pointerdown', (event) => {
+      if (!dossierSlot?.classList.contains('is-open')) return;
+      if (dossier.contains(event.target) || event.target.closest('[data-release-dossier]')) return;
+      closeReleaseDossier(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && dossierSlot?.classList.contains('is-open')) closeReleaseDossier(true);
+    });
+    window.addEventListener('scroll', positionReleaseDossier, { passive: true });
+    window.addEventListener('resize', positionReleaseDossier, { passive: true });
+    floatingDossierMedia.addEventListener('change', () => {
+      if (dossierSlot?.classList.contains('is-open')) positionReleaseDossier();
+    });
+
 
     const bg = document.querySelector('.bg-scene');
     const bgGrid = document.querySelector('.bg-grid');
@@ -3559,7 +4950,7 @@
     };
 
     const beginScan = (target) => {
-      if (!desktopScanner.matches || !scannerPanel || (mainInterface && mainInterface.classList.contains('interface-collapsed'))) return;
+      if (!desktopScanner.matches || !scannerPanel || document.body.classList.contains('release-dossier-open') || (mainInterface && mainInterface.classList.contains('interface-collapsed'))) return;
       clearTimeout(scanTimer);
       clearTimeout(closeTimer);
       stopTypingPreview();
@@ -3738,6 +5129,8 @@
           frameToggle.setAttribute('aria-label', collapsed ? 'Show interface' : 'Hide interface');
           if (hudToggleState) hudToggleState.textContent = collapsed ? 'OFF' : 'ON';
         };
+
+        if (collapsed) closeReleaseDossier(false);
 
         if (collapsed && !reducedMotion.matches) {
           hudTransitioning = true;
