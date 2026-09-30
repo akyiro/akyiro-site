@@ -4185,6 +4185,7 @@
 #epStreamingLinks .icon, .ep-listen-links .icon, .release-dossier__link .icon { width: 15px; height: 15px; flex: 0 0 15px; fill: currentColor; }
 .release-dossier__link { gap: 7px; }
 .release-dossier__link > span { flex: 1; }
+#releaseDossierVisualizer[hidden], .release-dossier__section-label[hidden] { display: none !important; }
 </style>
 </head>
 <body class="hud-booting">
@@ -4514,8 +4515,10 @@
 
     const renderDossierVisualizer = (release) => {
       if (!dossierVisualizer) return;
+      dossierVisualizer.hidden = !!release.isEP;
+      dossierVisualizer.previousElementSibling.hidden = !!release.isEP;
       if (release.isEP) {
-        dossierVisualizer.innerHTML = '<a class="release-dossier__link" href="#ep-visualisers" data-ep-explore>Explore tracks / listen <b>↓</b></a>';
+        dossierVisualizer.replaceChildren();
         return;
       }
       const video = release.visualizer;
@@ -5365,9 +5368,7 @@
       });
     });
 
-    document.addEventListener('click', event => {
-      if (event.target.closest('[data-ep-explore]')) dossierClose.click();
-    });
+
 </script>
 </body>
 </html>
