@@ -5,18 +5,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <title>akyiro</title>
+  <title>akyiro — the last flower EP</title>
 
-  <meta property="og:title" content="akyiro">
-  <meta property="og:description" content="ambient / digital / melancholy">
-  <meta property="og:image" content="https://akyiro.xyz/assets/og-image.png">
+  <meta property="og:title" content="akyiro — the last flower EP">
+  <meta property="og:description" content="the last flower — debut EP. Out now. Six tracks / six visualisers.">
+  <meta property="og:image" content="https://akyiro.xyz/assets/og-image.png?v=90">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://akyiro.xyz">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="akyiro">
-  <meta name="twitter:description" content="ambient / digital / melancholy">
-  <meta name="twitter:image" content="https://akyiro.xyz/assets/og-image.png">
+  <meta name="twitter:title" content="akyiro — the last flower EP">
+  <meta name="twitter:description" content="the last flower — debut EP. Out now. Six tracks / six visualisers.">
+  <meta name="twitter:image" content="https://akyiro.xyz/assets/og-image.png?v=90">
 
   <link rel="icon" href="./assets/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,7 +73,7 @@
       z-index: -2;
       pointer-events: none;
       background:
-        radial-gradient(ellipse at 50% 22%, rgba(255, 139, 58, 0.10), transparent 36%),
+        radial-gradient(ellipse at 50% 22%, rgba(255, 139, 58, 0.04), transparent 36%),
         linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.12) 25%, rgba(0,0,0,0.34) 78%, rgba(0,0,0,0.58) 100%);
     }
 
@@ -1709,7 +1709,7 @@
       transform: scale(1.045);
     }
     .latest-visualizer .release-video-card {
-      --visualizer-cover-image: url('./assets/soundscape-to-ardor-cover.webp');
+      --visualizer-cover-image: url('./assets/the-last-flower-cover.webp');
     }
     .release-video-card::after {
       content: "";
@@ -2615,7 +2615,7 @@
       }
       body::before {
         background:
-          radial-gradient(ellipse at 50% 22%, rgba(255, 139, 58, 0.10), transparent 36%),
+          radial-gradient(ellipse at 50% 22%, rgba(255, 139, 58, 0.04), transparent 36%),
           linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.12) 25%, rgba(0,0,0,0.34) 78%, rgba(0,0,0,0.58) 100%),
           linear-gradient(180deg, rgba(6, 2, 1, 0.28) 0%, rgba(6, 2, 1, 0.18) 32%, rgba(6, 2, 1, 0.50) 100%),
           linear-gradient(90deg, rgba(0,0,0,0.42), rgba(0,0,0,0.08) 20%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.08) 80%, rgba(0,0,0,0.42));
@@ -4141,6 +4141,42 @@
       .release-streams--three .button:last-child { grid-column: auto; }
     }
     .release-dossier__links.is-three .release-dossier__link:last-child { grid-column: 1 / -1; }
+
+    /* v87: EP release + one on-demand player, six track selectors. */
+    #ep-visualisers { scroll-margin-top: 24px; }
+    .release-info .ep-metadata { display: block !important; line-height: 2; margin: 14px 0 18px; }
+    .ep-current { font-size: .57rem; line-height: 1.8; color: var(--orange-bright); margin: 12px 0 8px; }
+    .ep-tracklist { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+    .ep-track { min-width: 0; min-height: 46px; display: flex; align-items: center; gap: 10px; text-align: left; padding: 10px; border: 1px solid rgba(255,145,61,.18); background: rgba(4,4,5,.62); color: inherit; font-family: inherit; cursor: pointer; }
+    .ep-track span { font-size: .56rem; line-height: 1.6; overflow-wrap: anywhere; }
+    .ep-track b { color: var(--orange-bright); font-size: .53rem; font-weight: 400; }
+    .ep-track:hover, .ep-track[aria-pressed="true"] { border-color: var(--orange-bright); background: rgba(255,145,61,.09); }
+    .ep-track:focus-visible { outline: 2px solid var(--orange-bright); outline-offset: 2px; }
+    @media(max-width:600px) { .ep-tracklist { grid-template-columns: 1fr; } }
+
+
+/* v89: v87 proportions, with numeric track rail beside the player only. */
+@media (min-width:961px) {
+ .page { width: min(758px, calc(100vw - 80px)); }
+ #ep-visualisers { display: grid !important; grid-template-columns: minmax(0,1fr) 44px; gap: 8px 10px; }
+ #ep-visualisers > .module-label { grid-column: 1 / -1; margin-bottom: 0; }
+ #ep-visualisers > .release-video-card { grid-column: 1; grid-row: 2; width: 100%; min-width: 0; }
+ #ep-visualisers > .ep-tracklist { grid-column: 2; grid-row: 2; grid-template-columns: 1fr; grid-template-rows: repeat(6,1fr); gap: 6px; }
+ #ep-visualisers .ep-track { min-height: 0; padding: 0; justify-content: center; }
+ #ep-visualisers .ep-track b { font-size: 11px; }
+ #ep-visualisers .ep-track span { display: none; }
+ #ep-visualisers > .ep-current { grid-column: 1 / -1; margin: 0; }
+}
+
+/* v90: streaming destinations follow the selected track, never hover. */
+.ep-listen { grid-column: 1 / -1; width: 100%; margin-top: 5px; text-align: left; }
+.ep-listen-title { color: var(--orange-bright); font-size: .50rem; letter-spacing: .10em; line-height: 1.7; margin-bottom: 7px; overflow-wrap: anywhere; }
+.ep-listen-links { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; }
+.ep-listen-links .button { min-width: 0; min-height: 36px; padding: 8px; gap: 5px; font-size: .55rem; letter-spacing: .04em; }
+.ep-listen-links .button span { white-space: normal; }
+@media(max-width:420px) {
+ .ep-listen-links { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body class="hud-booting">
@@ -4242,35 +4278,30 @@
         <div class="release-module">
           <div class="release-overview">
             <div class="release-art-column">
-              <div class="release-cover scan-target" tabindex="0" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|COVER ART: SERHII STOVBA|PROFILE: CINEMATIC / AMBIENT|STATUS: OUT NOW">
-                <img src="./assets/soundscape-to-ardor-cover.webp" width="2048" height="2048" decoding="async" alt="soundscape to ardor cover art">
+              <div class="release-cover scan-target" tabindex="0" data-scan-title="THE LAST FLOWER" data-scan-lines="TYPE: EP|TRACKS: 6|RELEASE: 01.10.2026|STATUS: OUT NOW|MOOD: AMBIENT / DIGITAL">
+                <img src="./assets/the-last-flower-cover.webp" width="1600" height="1600" alt="the last flower EP cover art">
               </div>
               <div class="release-cover-label">cover art // official</div>
             </div>
-
             <div class="release-info">
-              <div class="release-live-title scan-heading scan-target" tabindex="0" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|ARRANGEMENT: AKYIRO|COVER ART: SERHII STOVBA|SIGNAL: MELANCHOLIC / CINEMATIC|RELEASE: OUT NOW">soundscape to ardor</div>
+              <div class="release-live-title scan-heading scan-target" tabindex="0" data-scan-title="THE LAST FLOWER" data-scan-lines="TYPE: EP|TRACKS: 6|RELEASE: 01.10.2026|STATUS: OUT NOW">the last flower</div>
               <div class="release-live-status">out now</div>
-              <div class="listen">release links_</div>
-
-              <div class="release-streams release-streams--three" aria-label="Listen to soundscape to ardor">
-                <a class="button scan-target" data-scan-title="SPOTIFY" data-scan-lines="TARGET: SOUNDSCAPE TO ARDOR|STATUS: CONNECTED|PLATFORM: SPOTIFY|ACTION: OPEN RELEASE" href="https://open.spotify.com/album/6WjJawaTj8XkpDi6aPVRw5" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false"><path d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"></path></svg><span>Spotify</span><b>↗</b></a>
-                <a class="button scan-target" data-scan-title="APPLE MUSIC" data-scan-lines="TARGET: SOUNDSCAPE TO ARDOR|STATUS: CONNECTED|PLATFORM: APPLE MUSIC|ACTION: OPEN RELEASE" href="https://music.apple.com/us/album/soundscape-to-ardor-single/6804140774" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 384 512" aria-hidden="true" focusable="false"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path></svg><span>Apple Music</span><b>↗</b></a>
-                <a class="button scan-target" data-scan-title="YOUTUBE MUSIC" data-scan-lines="TARGET: SOUNDSCAPE TO ARDOR|STATUS: CONNECTED|PLATFORM: YOUTUBE MUSIC|ACTION: OPEN RELEASE" href="https://youtu.be/9cA_GUXm5P0?si=4NDREjI5ZMm2bMI9" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 576 512" aria-hidden="true" focusable="false"><path d="M80 64H496C540.2 64 576 99.8 576 144V368C576 412.2 540.2 448 496 448H80C35.8 448 0 412.2 0 368V144C0 99.8 35.8 64 80 64Z"></path><path d="M232 176V336L376 256Z" fill="#050201"></path></svg><span>YT Music</span><b>↗</b></a>
+              <div class="listen ep-metadata">EP / 6 TRACKS<br>01.10.2026</div>
+              <div class="release-streams" id="epStreamingLinks">
+                <a class="button" href="#ep-visualisers"><span>Watch visualisers</span><b>↓</b></a>
               </div>
             </div>
           </div>
-
-          <div class="release-video latest-visualizer">
-            <div class="module-label">// visualizer</div>
-            <div class="release-video-card scan-target" data-video-id="eoAEQSasKfk" data-visualizer-title="akyiro - soundscape to ardor (visualizer)" data-scan-title="SOUNDSCAPE TO ARDOR // VISUALIZER" data-scan-lines="SOURCE: YOUTUBE|STATUS: READY|RELEASE: SOUNDSCAPE TO ARDOR|ACTION: INITIALIZE VISUALIZER">
+          <div class="release-video latest-visualizer" id="ep-visualisers">
+            <div class="module-label">// EP visualisers</div>
+            <div class="release-video-card scan-target" data-video-id="ZUudwsBy6nU" data-visualizer-title="akyiro - the ERA (visualizer)" data-scan-title="THE ERA // VISUALIZER" data-scan-lines="SOURCE: YOUTUBE|STATUS: READY|RELEASE: THE LAST FLOWER|TRACK: 1/6|ACTION: INITIALIZE VISUALIZER">
               <div class="release-video-card__inner">
                 <div class="yt-top">
                   <span class="yt-avatar">A</span>
-                  <span class="yt-title">akyiro - soundscape to ardor (visualizer)</span>
+                  <span class="yt-title">akyiro - the ERA (visualizer)</span>
                   <span class="yt-actions">↗</span>
                 </div>
-                <button class="release-video-card__center visualizer-launch" type="button" data-visualizer-launch aria-label="Play akyiro - soundscape to ardor visualizer">
+                <button class="release-video-card__center visualizer-launch" type="button" data-visualizer-launch aria-label="Play akyiro - the ERA visualizer">
                   <span class="release-video-card__play" aria-hidden="true"></span>
                   <span class="visualizer-launch__label">play visualizer</span>
                 </button>
@@ -4279,8 +4310,17 @@
                   <span>click to initialize</span>
                 </div>
               </div>
-              <a class="visualizer-youtube-link" href="https://www.youtube.com/watch?v=eoAEQSasKfk" target="_blank" rel="noopener noreferrer" aria-label="Watch soundscape to ardor visualizer directly on YouTube">YouTube ↗</a>
+              <a class="visualizer-youtube-link" href="https://www.youtube.com/watch?v=ZUudwsBy6nU" target="_blank" rel="noopener noreferrer" aria-label="Watch the ERA visualizer directly on YouTube">YouTube ↗</a>
             </div>
+            <p class="ep-current" id="epCurrent" aria-live="polite">01 / 06 — the ERA</p>
+            <div class="ep-tracklist" aria-label="EP visualisers"></div>
+<div class="ep-listen" aria-labelledby="epListenTitle">
+              <div class="ep-listen-title" id="epListenTitle" aria-live="polite">// listen to: 01 — the ERA</div>
+              <div class="ep-listen-links">
+<a class="button" data-ep-platform="1" href="https://open.spotify.com/track/3trZilrfseIzLiJFPJztSN?si=ddef02fa44334e14" target="_blank" rel="noopener noreferrer" aria-label="Listen to the ERA on Spotify"><span>Spotify</span><b>↗</b></a>
+<a class="button" data-ep-platform="2" href="https://music.apple.com/song/the-era/6809946930" target="_blank" rel="noopener noreferrer" aria-label="Listen to the ERA on Apple Music"><span>Apple Music</span><b>↗</b></a>
+<a class="button" data-ep-platform="0" href="https://music.youtube.com/watch?v=_izwNzBJ-Lw&amp;si=qq7mjL_V6WceawXC" target="_blank" rel="noopener noreferrer" aria-label="Listen to the ERA on YouTube Music"><span>YouTube Music</span><b>↗</b></a>
+</div></div>
           </div>
         </div>
       </section>
@@ -4288,7 +4328,11 @@
       <section class="section section--discography">
         <div class="eyebrow">// discography</div>
         <div class="discography-module compact-module">
-          <div class="discography-strip" aria-label="Discography releases">
+          <div class="discography-strip" aria-label="Discography releases"><article class="discography-entry" data-release-id="the-last-flower">
+<button class="discography-cover scan-target" type="button" data-release-dossier="the-last-flower" aria-expanded="false" aria-controls="releaseDossier" data-scan-title="THE LAST FLOWER" data-scan-lines="TYPE: EP|TRACKS: 6|STATUS: OUT NOW|ACTION: OPEN RELEASE FILE">
+<img src="./assets/the-last-flower-cover-thumb.webp" width="320" height="320" loading="lazy" alt="the last flower EP cover art"></button>
+<div class="discography-copy"><div class="discography-title">the last flower</div><div class="discography-meta">01.10.2026 // EP</div></div></article>
+
             <article class="discography-entry" data-release-id="soundscape-to-ardor">
               <button class="discography-cover scan-target" type="button" data-release-dossier="soundscape-to-ardor" aria-expanded="false" aria-controls="releaseDossier" data-scan-title="SOUNDSCAPE TO ARDOR" data-scan-lines="TYPE: COVER SINGLE|SOURCE: BLEACH OST|COVER ART: SERHII STOVBA|STATUS: OUT NOW|ACTION: OPEN RELEASE FILE">
                 <img src="./assets/soundscape-to-ardor-cover-thumb.webp" width="320" height="320" decoding="async" loading="lazy" alt="soundscape to ardor cover art">
@@ -4332,17 +4376,7 @@
         </div>
       </section>
 
-      <section class="section section--ep compact-module scan-target" tabindex="0" data-scan-title="THE LAST FLOWER" data-scan-lines="TYPE: EP|STATUS: PRE-SAVE OPEN|RELEASE: 01.10.2026|TRACKS: 6|MOOD: AMBIENT / DIGITAL">
-        <div class="ep-thumb" aria-hidden="true"></div>
-        <div class="ep-copy">
-          <div class="eyebrow">// upcoming ep</div>
-          <div class="ep-title">the last flower</div>
-          <div class="status">release // 01.10.2026</div>
-        </div>
-        <a class="ep-action scan-target" data-scan-title="THE LAST FLOWER // PRE-SAVE" data-scan-lines="PLATFORM: SPOTIFY|STATUS: PRE-SAVE OPEN|RELEASE: 01.10.2026|TRACKS: 6|ACTION: OPEN HYPERFOLLOW" href="https://distrokid.com/hyperfollow/akyiro/the-last-flower" target="_blank" rel="noopener noreferrer" aria-label="Pre-save the last flower on Spotify via DistroKid HyperFollow"><svg class="icon" viewBox="0 0 496 512" aria-hidden="true" focusable="false"><path d="M248 8C111.1 8 0 119.1 0 256s111.1 248 248 248 248-111.1 248-248S384.9 8 248 8zm100.7 364.9c-4.2 0-6.8-1.3-10.7-3.6-62.4-37.6-135-39.2-206.7-24.5-3.9 1-9 2.6-11.9 2.6-9.7 0-15.8-7.7-15.8-15.8 0-10.3 6.1-15.2 13.6-16.8 81.9-18.1 165.6-16.5 237 26.2 6.1 3.9 9.7 7.4 9.7 16.5s-7.1 15.4-15.2 15.4zm26.9-65.6c-5.2 0-8.7-2.3-12.3-4.2-62.5-37-155.7-51.9-238.6-29.4-4.8 1.3-7.4 2.6-11.9 2.6-10.7 0-19.4-8.7-19.4-19.4s5.2-17.8 15.5-20.7c27.8-7.8 56.2-13.6 97.8-13.6 64.9 0 127.6 16.1 177 45.5 8.1 4.8 11.3 11 11.3 19.7-.1 10.8-8.5 19.5-19.4 19.5zm31-76.2c-5.2 0-8.4-1.3-12.9-3.9-71.2-42.5-198.5-52.7-280.9-29.7-3.6 1-8.1 2.6-12.9 2.6-13.2 0-23.3-10.3-23.3-23.6 0-13.6 8.4-21.3 17.4-23.9 35.2-10.3 74.6-15.2 117.5-15.2 73 0 149.5 15.2 205.4 47.8 7.8 4.5 12.9 10.7 12.9 22.6 0 13.6-11 23.3-23.2 23.3z"></path></svg><span>Spotify pre-save</span><b>↗</b></a>
-      </section>
-
-      <section class="section section--links compact-module links-module">
+<section class="section section--links compact-module links-module">
         <div class="eyebrow">// personal links_</div>
         <div class="buttons">
           <a class="button scan-target" data-scan-placement="bottom" data-scan-title="INSTAGRAM" data-scan-lines="CHANNEL: @AKYIRO.MUSIC|TYPE: SOCIAL FEED|LINK: EXTERNAL|STATUS: CONNECTED" href="https://www.instagram.com/akyiro.music" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 448 512" aria-hidden="true" focusable="false"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg><span>Instagram</span></a>
@@ -4407,6 +4441,11 @@
     });
 
     const releaseArchive = {
+      'the-last-flower': {
+        title: 'the last flower', meta: '01.10.2026 // EP // 6 tracks // out now',
+        cover: './assets/the-last-flower-cover.webp',
+        isEP: true, links: []
+      },
       'soundscape-to-ardor': {
         title: 'soundscape to ardor',
         meta: 'out now // cover single',
@@ -4463,6 +4502,10 @@
 
     const renderDossierVisualizer = (release) => {
       if (!dossierVisualizer) return;
+      if (release.isEP) {
+        dossierVisualizer.innerHTML = '<a class="release-dossier__link" href="#ep-visualisers" data-ep-explore>Explore tracks / listen <b>↓</b></a>';
+        return;
+      }
       const video = release.visualizer;
       if (!video?.videoId) {
         dossierVisualizer.innerHTML = `
@@ -4508,6 +4551,8 @@
       dossierCover.alt = `${release.title} cover art`;
       renderDossierVisualizer(release);
 
+      dossierLinks.previousElementSibling.hidden = release.links.length === 0;
+      dossierLinks.hidden = release.links.length === 0;
       dossierLinks.replaceChildren();
       dossierLinks.classList.toggle('is-three', release.links.length === 3);
       release.links.forEach(({ label, url }) => {
@@ -5244,5 +5289,76 @@
       playHudBoot(false);
     }
   </script>
+<script>
+    // Track streaming URLs are separate from the original visualiser video IDs.
+    const epTracks = [["the ERA", "ZUudwsBy6nU"], ["blooming in the darkness", "Izc-Fn3tnZo"], ["the last orchid", "Y9iE4OPWao0"], ["empty loneliness", "lCjEFpJ58uc"], ["chaos in life", "d5dfOxYOSsQ"], ["Loudness ERA", "4gerCcLqMts"]];
+    const epCard = document.querySelector('#ep-visualisers .release-video-card');
+    const epFacade = epCard.innerHTML;
+    const epList = document.querySelector('.ep-tracklist');
+    let epSelected = 0;
+    const epStreaming = [["https://music.youtube.com/watch?v=_izwNzBJ-Lw&si=qq7mjL_V6WceawXC", "https://open.spotify.com/track/3trZilrfseIzLiJFPJztSN?si=ddef02fa44334e14", "https://music.apple.com/song/the-era/6809946930"], ["https://music.youtube.com/watch?v=Izc-Fn3tnZo&si=5BXRQ5j5dLlOLjaf", "https://open.spotify.com/track/01dYlsDACiBbh4EliMWKRL?si=52eca82588e0400b", "https://music.apple.com/song/blooming-in-the-darkness/6809946934"], ["https://music.youtube.com/watch?v=Y9iE4OPWao0&si=jOmoHQ5QmuFhz1me", "https://open.spotify.com/track/1J3Il2Gj7uHiEbLzda8q0n?si=72487ae9269b4fcd", "https://music.apple.com/song/the-last-orchid/6809946935"], ["https://music.youtube.com/watch?v=lCjEFpJ58uc&si=PloGSo3WSvhbrqUs", "https://open.spotify.com/track/44s78bX0mZ4vj5qKEHPdEr?si=2eabf8b824874528", "https://music.apple.com/song/empty-loneliness/6809946936"], ["https://music.youtube.com/watch?v=nXS7kWM0ZVg&si=0g7ShyuvjuLWmvYy", "https://open.spotify.com/track/0irxvikqXBw5jOIz9rUbLL?si=97a9c901a0f148aa", "https://music.apple.com/song/chaos-in-life/6809946937"], ["https://music.youtube.com/watch?v=is_yHey2a8c&si=UZc9-B_9E2xtuQb5", "https://open.spotify.com/track/4yhAboHFqzzxECOiy2ioIQ?si=24d7436d63264853", "https://music.apple.com/song/loudness-era/6809946938"]];
+    const updateTrackStreaming = () => {
+      const title = epTracks[epSelected][0];
+      document.getElementById('epListenTitle').textContent = '// listen to: ' + String(epSelected+1).padStart(2,'0') + ' — ' + title;
+      document.querySelectorAll('[data-ep-platform]').forEach(link => {
+        link.href = epStreaming[epSelected][Number(link.dataset.epPlatform)];
+        link.setAttribute('aria-label', 'Listen to ' + title + ' on ' + link.querySelector('span').textContent);
+      });
+    };
+
+    epTracks.forEach(([title, videoId], index) => {
+      const button = document.createElement('button');
+      button.type = 'button'; button.className = 'ep-track scan-target';
+      button.dataset.scanTitle = title;
+      button.dataset.scanLines = 'EP: THE LAST FLOWER|TRACK: ' + String(index+1).padStart(2,'0') + ' / 06|SOURCE: YOUTUBE|ACTION: PLAY VISUALISER';
+      const previewTrack = () => {
+        if (desktopScanner.matches && tacticalCursor) tacticalCursor.classList.add('is-visible');
+        document.getElementById('epCurrent').textContent = String(index+1).padStart(2,'0') + ' / 06 — ' + title;
+        beginScan(button);
+      };
+      const restoreTrack = () => {
+        if (tacticalCursor) tacticalCursor.classList.remove('is-visible', 'is-active');
+        document.getElementById('epCurrent').textContent = String(epSelected+1).padStart(2,'0') + ' / 06 — ' + epTracks[epSelected][0];
+        endScan();
+      };
+      button.addEventListener('mouseenter', previewTrack);
+      button.addEventListener('focus', previewTrack);
+      button.addEventListener('mouseleave', restoreTrack);
+      button.addEventListener('blur', restoreTrack);
+      button.setAttribute('aria-pressed', String(index === 0));
+      button.setAttribute('aria-label', 'Play visualiser: ' + title);
+      const number = document.createElement('b'); number.textContent = String(index+1).padStart(2,'0');
+      const label = document.createElement('span'); label.textContent = title;
+      button.append(number, label); epList.append(button);
+      button.addEventListener('click', () => {
+        if (epSelected !== index || !epCard.classList.contains('has-player')) {
+          epCard.innerHTML = epFacade;
+          epCard.classList.remove('has-player','embed-unavailable');
+          epCard.dataset.videoId = videoId;
+          epCard.dataset.visualizerTitle = 'akyiro - ' + title + ' (visualiser)';
+          epCard.dataset.scanTitle = title.toUpperCase() + ' // VISUALISER';
+          epCard.dataset.scanLines = 'SOURCE: YOUTUBE|RELEASE: THE LAST FLOWER|TRACK: ' + (index+1) + '/6|ACTION: PLAY VISUALISER';
+          epCard.querySelector('.yt-title').textContent = epCard.dataset.visualizerTitle;
+          epCard.querySelector('[data-visualizer-launch]').setAttribute('aria-label', 'Play ' + title + ' visualiser');
+          const direct = epCard.querySelector('.visualizer-youtube-link');
+          direct.href = 'https://www.youtube.com/watch?v=' + videoId;
+          direct.setAttribute('aria-label', 'Watch ' + title + ' on YouTube');
+          epSelected = index;
+          updateTrackStreaming();
+          epList.querySelectorAll('button').forEach((item,i) => item.setAttribute('aria-pressed',String(i===index)));
+          document.getElementById('epCurrent').textContent = String(index+1).padStart(2,'0') + ' / 06 — ' + title;
+          loadVisualizer(epCard);
+        }
+      });
+    });
+    releaseArchive['the-last-flower'].links.forEach(({label,url}) => {
+      const link = document.createElement('a'); link.className = 'button';
+      link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+      link.textContent = label + ' ↗'; document.getElementById('epStreamingLinks').append(link);
+    });
+    document.addEventListener('click', event => {
+      if (event.target.closest('[data-ep-explore]')) dossierClose.click();
+    });
+</script>
 </body>
 </html>
